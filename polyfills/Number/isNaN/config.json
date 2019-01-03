@@ -8,9 +8,7 @@
 		"default"
 	],
 	"browsers": {
-		"edge": "<14",
-		"edge_mob": "<14",
-		"ie": "*",
+		"ie": "<14",
 		"ie_mob" : "*",
 		"firefox": "<16",
 		"firefox_mob":"<44",
@@ -23,11 +21,7 @@
 		"op_mob": "<33",
 		"bb": "*"
 	},
-	"dependencies": [
-		"_ESAbstract.CreateMethodProperty",
-		"_ESAbstract.Type"
-	],
 	"license": "MIT",
-	"spec": "https://www.ecma-international.org/ecma-262/6.0/#sec-number.isnan",
+	"spec": "http://www.ecma-international.org/ecma-262/6.0/#sec-isnan-number",
 	"docs": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/isNaN"
 }

@@ -1,5 +1,217 @@
-/* global CreateIterResultObject, CreateMethodProperty, GetIterator, IsCallable, IteratorClose, IteratorStep, IteratorValue, OrdinaryCreateFromConstructor, SameValueZero, Type, Symbol */
 (function (global) {
+	// 7.2.11. SameValueZero ( x, y )
+	var sameValueZero = function (x, y) {
+		// 1. If Type(x) is different from Type(y), return false.
+		if (typeof x !== typeof y) {
+			return false;
+		}
+		// 2. If Type(x) is Number, then
+		if (typeof x === 'number') {
+			// a. If x is NaN and y is NaN, return true.
+			if (isNaN(x) && isNaN(y)) {
+				return true;
+			}
+			// b. If x is +0 and y is -0, return true.
+			if (x === +0 && y === -0) {
+				return true;
+			}
+			// c. If x is -0 and y is +0, return true.
+			if (x === -0 && y === +0) {
+				return true;
+			}
+			// d. If x is the same Number value as y, return true.
+			if (x === y) {
+				return true;
+			}
+			// e. Return false.
+			return false;
+		}
+		// 3. Return SameValueNonNumber(x, y).
+		return x === y;
+	};
+
+	// 7.3.9. GetMethod ( V, P )
+	function getMethod(V, P) {
+		// 1. Assert: IsPropertyKey(P) is true.
+		// 2. Let func be ? GetV(V, P).
+		var func = V[P];
+		// 3. If func is either undefined or null, return undefined.
+		if (func === null || func === undefined) {
+			return undefined;
+		}
+		// 4. If IsCallable(func) is false, throw a TypeError exception.
+		if (typeof func !== 'function') {
+			throw new TypeError('Method not callable: ' + P);
+		}
+		// 5. Return func.
+		return func;
+	}
+
+	// 7.4.1. GetIterator ( obj [ , method ] )
+	// The abstract operation GetIterator with argument obj and optional argument method performs the following steps:
+	function getIterator(obj /*, method */) {
+		// 1. If method is not present, then
+		if (!(1 in arguments)) {
+			// a. Set method to ? GetMethod(obj, @@iterator).
+			var method = getMethod(obj, Symbol.iterator);
+		}
+		// 2. Let iterator be ? Call(method, obj).
+		var iterator = method.call(obj);
+		// 3. If Type(iterator) is not Object, throw a TypeError exception.
+		if (typeof iterator !== 'object') {
+			throw new TypeError('bad iterator');
+		}
+		// 4. Let nextMethod be ? GetV(iterator, "next").
+		var nextMethod = iterator.next;
+		// 5. Let iteratorRecord be Record {[[Iterator]]: iterator, [[NextMethod]]: nextMethod, [[Done]]: false}.
+		var iteratorRecord = Object.create(null);
+		iteratorRecord['[[Iterator]]'] = iterator;
+		iteratorRecord['[[NextMethod]]'] = nextMethod;
+		iteratorRecord['[[Done]]'] = false;
+		// 6. Return iteratorRecord.
+		return iteratorRecord;
+	}
+
+	// 7.4.2. IteratorNext ( iteratorRecord [ , value ] )
+	function iteratorNext(iteratorRecord /* [, value] */) {
+		// 1. If value is not present, then
+		if (!(1 in arguments)) {
+			// a. Let result be ? Call(iteratorRecord.[[NextMethod]], iteratorRecord.[[Iterator]], « »).
+			var result = iteratorRecord['[[NextMethod]]'].call(iteratorRecord['[[Iterator]]']);
+		// 2. Else,
+		} else {
+			// a. Let result be ? Call(iteratorRecord.[[NextMethod]], iteratorRecord.[[Iterator]], « value »).
+			var result = iteratorRecord['[[NextMethod]]'].call(iteratorRecord['[[Iterator]]'], arguments[1]);
+		}
+		// 3. If Type(result) is not Object, throw a TypeError exception.
+		if (typeof result !== 'object') {
+			throw new TypeError('bad iterator');
+		}
+		// 4. Return result.
+		return result;
+	}
+
+	// 7.4.3 IteratorComplete ( iterResult )
+	function iteratorComplete(iterResult) {
+		// 1. Assert: Type(iterResult) is Object.
+		if (typeof iterResult !== 'object') {
+			throw new Error(Object.prototype.toString.call(iterResult) + 'is not an Object.');
+		}
+		// 2. Return ToBoolean(? Get(iterResult, "done")).
+		return Boolean(iterResult['done']);
+	}
+
+	// 7.4.4 IteratorValue ( iterResult )
+	function iteratorValue(iterResult) {
+		// Assert: Type(iterResult) is Object.
+		if (typeof iterResult !== 'object') {
+			throw new Error(Object.prototype.toString.call(iterResult) + 'is not an Object.');
+		}
+		// Return ? Get(iterResult, "value").
+		return iterResult.value;
+	}
+
+	// 7.4.5. IteratorStep ( iteratorRecord )
+	function iteratorStep(iteratorRecord) {
+		// 1. Let result be ? IteratorNext(iteratorRecord).
+		var result = iteratorNext(iteratorRecord);
+		// 2. Let done be ? IteratorComplete(result).
+		var done = iteratorComplete(result);
+		// 3. If done is true, return false.
+		if (done === true) {
+			return false;
+		}
+		// 4. Return result.
+		return result;
+	}
+
+	// 7.4.6. IteratorClose ( iteratorRecord, completion )
+	function iteratorClose(iteratorRecord, completion) {
+		// 1. Assert: Type(iteratorRecord.[[Iterator]]) is Object.
+		if (typeof iteratorRecord['[[Iterator]]'] !== 'object') {
+			throw new Error(Object.prototype.toString.call(iteratorRecord['[[Iterator]]']) + 'is not an Object.');
+		}
+		// 2. Assert: completion is a Completion Record.
+		// Polyfill.io - Ignoring this step as there is no way to check if something is a Completion Record in userland JavaScript.
+
+		// 3. Let iterator be iteratorRecord.[[Iterator]].
+		var iterator = iteratorRecord['[[Iterator]]'];
+		// 4. Let return be ? GetMethod(iterator, "return").
+		// Polyfill.io - We name it  returnMethod because return is a keyword and can not be used as an identifier (E.G. variable name, function name etc).
+		var returnMethod = getMethod(iterator, "return");
+		// 5. If return is undefined, return Completion(completion).
+		if (returnMethod === undefined) {
+			return completion;
+		}
+		// 6. Let innerResult be Call(return, iterator, « »).
+		try {
+			var innerResult = returnMethod.call(iterator);
+		} catch (error) {
+			var innerException = error;
+		}
+		// 7. If completion.[[Type]] is throw, return Completion(completion).
+		if (completion) {
+			return completion;
+		}
+		// 8. If innerResult.[[Type]] is throw, return Completion(innerResult).
+		if (innerException) {
+			throw innerException;
+		}
+		// 9. If Type(innerResult.[[Value]]) is not Object, throw a TypeError exception.
+		if (!(typeof innerResult !== 'object')) {
+			throw new TypeError("Iterator's return method returned a non-object.");
+		}
+		// 10. Return Completion(completion).
+		return completion;
+	}
+
+	// 7.4.7. CreateIterResultObject ( value, done )
+	function createIterResultObject(value, done) {
+		// 1. Assert: Type(done) is Boolean.
+		if (typeof done !== 'boolean') {
+			throw new Error();
+		}
+		// 2. Let obj be ObjectCreate(%ObjectPrototype%).
+		var obj = {};
+		// 3. Perform CreateDataProperty(obj, "value", value).
+		obj.value = value;
+		// 4. Perform CreateDataProperty(obj, "done", done).
+		obj.done = done;
+		// 5. Return obj.
+		return obj;
+	}
+	// 9.1.13. OrdinaryCreateFromConstructor ( constructor, intrinsicDefaultProto [ , internalSlotsList ] )
+	var ordinaryCreateFromConstructor = function (constructor, intrinsicDefaultProto) { // eslint-disable-line no-unused-vars
+		var internalSlotsList = arguments[2] || {};
+		/*
+			1. Assert: intrinsicDefaultProto is a String value that is this specification's name of an intrinsic object.
+			The corresponding object must be an intrinsic that is intended to be used as the[[Prototype]] value of an object.
+		*/
+		// Polyfill.io - We ignore the above step and instead pass the intrinsic directly.
+
+		// 2. Let proto be ? GetPrototypeFromConstructor(constructor, intrinsicDefaultProto).
+		// Polyfill.io - We ignore the above step and always use the prototype of the constructor.
+		var proto = Object.getPrototypeOf(constructor);
+
+		// 3. Return ObjectCreate(proto, internalSlotsList).
+		// Polyfill.io - We do not pass internalSlotsList to Object.create because Object.create does use the default ordinary object definitions specified in 9.1.
+		var obj = Object.create(proto);
+		for (var name in internalSlotsList) {
+			if (Object.prototype.hasOwnProperty.call(internalSlotsList, name)) {
+				Object.defineProperty(obj, name, {
+					configurable: true,
+					enumerable: false,
+					writable: true,
+					value: internalSlotsList[name]
+				});
+			}
+		}
+		return obj;
+	};
+
+	// Deleted map items mess with iterator pointers, so rather than removing them mark them as deleted. Can't use undefined or null since those both valid keys so use a private symbol.
+	var undefMarker = Symbol('undef');
+
 	var supportsGetters = (function () {
 		try {
 			var a = {};
@@ -17,8 +229,10 @@
 		}
 	}());
 
-	// Deleted map items mess with iterator pointers, so rather than removing them mark them as deleted. Can't use undefined or null since those both valid keys so use a private symbol.
-	var undefMarker = Symbol('undef');
+	var isCallable = function (fn) {
+		return typeof fn === 'function';
+	};
+
 	// 23.1.1.1 Map ( [ iterable ] )
 	var Map = function Map(/* iterable */) {
 		// 1. If NewTarget is undefined, throw a TypeError exception.
@@ -26,7 +240,7 @@
 			throw new TypeError('Constructor Map requires "new"');
 		}
 		// 2. Let map be ? OrdinaryCreateFromConstructor(NewTarget, "%MapPrototype%", « [[MapData]] »).
-		var map = OrdinaryCreateFromConstructor(this, Map.prototype, {
+		var map = ordinaryCreateFromConstructor(this, "%MapPrototype%", {
 			_keys: [],
 			_values: [],
 			_size: 0,
@@ -47,7 +261,7 @@
 		}
 
 		// 4. If iterable is not present, let iterable be undefined.
-		var iterable = arguments.length > 0 ? arguments[0] : undefined;
+		var iterable = arguments[0] || undefined;
 
 		// 5. If iterable is either undefined or null, return map.
 		if (iterable === null || iterable === undefined) {
@@ -58,31 +272,31 @@
 		var adder = map.set;
 
 		// 7. If IsCallable(adder) is false, throw a TypeError exception.
-		if (!IsCallable(adder)) {
+		if (!isCallable(adder)) {
 			throw new TypeError("Map.prototype.set is not a function");
 		}
 
 		// 8. Let iteratorRecord be ? GetIterator(iterable).
 		try {
-			var iteratorRecord = GetIterator(iterable);
+			var iteratorRecord = getIterator(iterable);
 			// 9. Repeat,
 			while (true) {
 				// a. Let next be ? IteratorStep(iteratorRecord).
-				var next = IteratorStep(iteratorRecord);
+				var next = iteratorStep(iteratorRecord);
 				// b. If next is false, return map.
 				if (next === false) {
 					return map;
 				}
 				// c. Let nextItem be ? IteratorValue(next).
-				var nextItem = IteratorValue(next);
+				var nextItem = iteratorValue(next);
 				// d. If Type(nextItem) is not Object, then
-				if (Type(nextItem) !== 'object') {
+				if (typeof nextItem !== 'object') {
 					// i. Let error be Completion{[[Type]]: throw, [[Value]]: a newly created TypeError object, [[Target]]: empty}.
 					try {
 						throw new TypeError('Iterator value ' + nextItem + ' is not an entry object');
 					} catch (error) {
 						// ii. Return ? IteratorClose(iteratorRecord, error).
-						return IteratorClose(iteratorRecord, error);
+						return iteratorClose(iteratorRecord, error);
 					}
 				}
 				try {
@@ -98,7 +312,7 @@
 					adder.call(map, k, v);
 				} catch (e) {
 					// j. If status is an abrupt completion, return ? IteratorClose(iteratorRecord, status).
-					return IteratorClose(iteratorRecord, e);
+					return iteratorClose(iteratorRecord, e);
 				}
 			}
 		} catch (e) {
@@ -139,15 +353,24 @@
 			set: undefined
 		});
 	} else {
-		CreateMethodProperty(Map, Symbol.species, Map);
+		Object.defineProperty(Map, Symbol.species, {
+			configurable: true,
+			enumerable: false,
+			writable: true,
+			value: Map
+		});
 	}
 
 	// 23.1.3.1 Map.prototype.clear ( )
-	CreateMethodProperty(Map.prototype, 'clear', function clear() {
+	Object.defineProperty(Map.prototype, 'clear', {
+		configurable: true,
+		enumerable: false,
+		writable: true,
+		value: function clear() {
 			// 1. Let M be the this value.
 			var M = this;
 			// 2. If Type(M) is not Object, throw a TypeError exception.
-			if (Type(M) !== 'object') {
+			if (typeof M !== 'object') {
 				throw new TypeError('Method Map.prototype.clear called on incompatible receiver ' + Object.prototype.toString.call(M));
 			}
 			// 3. If M does not have a [[MapData]] internal slot, throw a TypeError exception.
@@ -170,17 +393,26 @@
 			// 6. Return undefined.
 			return undefined;
 		}
-	);
+	});
 
 	// 23.1.3.2. Map.prototype.constructor
-	CreateMethodProperty(Map.prototype, 'constructor', Map);
+	Object.defineProperty(Map.prototype, 'constructor', {
+		configurable: true,
+		enumerable: false,
+		writable: true,
+		value: Map
+	});
 
 	// 23.1.3.3. Map.prototype.delete ( key )
-	CreateMethodProperty(Map.prototype, 'delete', function (key) {
+	Object.defineProperty(Map.prototype, 'delete', {
+		configurable: true,
+		enumerable: false,
+		writable: true,
+		value: function (key) {
 			// 1. Let M be the this value.
 			var M = this;
 			// 2. If Type(M) is not Object, throw a TypeError exception.
-			if (Type(M) !== 'object') {
+			if (typeof M !== 'object') {
 				throw new TypeError('Method Map.prototype.clear called on incompatible receiver ' + Object.prototype.toString.call(M));
 			}
 			// 3. If M does not have a [[MapData]] internal slot, throw a TypeError exception.
@@ -192,12 +424,12 @@
 			// 5. For each Record {[[Key]], [[Value]]} p that is an element of entries, do
 			for (var i = 0; i < entries.length; i++) {
 				// a. If p.[[Key]] is not empty and SameValueZero(p.[[Key]], key) is true, then
-				if (M._keys[i] !== undefMarker && SameValueZero(M._keys[i], key)) {
+				if (M._keys[i] !== undefMarker && sameValueZero(M._keys[i], key)) {
 					// i. Set p.[[Key]] to empty.
 					this._keys[i] = undefMarker;
 					// ii. Set p.[[Value]] to empty.
 					this._values[i] = undefMarker;
-					this._size = --this._size;
+					--this._size;
 					if (!supportsGetters) {
 						this.size = this._size;
 					}
@@ -208,23 +440,31 @@
 			// 6. Return false.
 			return false;
 		}
-	);
+	});
 
 	// 23.1.3.4. Map.prototype.entries ( )
-	CreateMethodProperty(Map.prototype, 'entries', function entries () {
+	Object.defineProperty(Map.prototype, 'entries', {
+		configurable: true,
+		enumerable: false,
+		writable: true,
+		value: function entries () {
 			// 1. Let M be the this value.
 			var M = this;
 			// 2. Return ? CreateMapIterator(M, "key+value").
-			return CreateMapIterator(M, 'key+value');
+			return createMapIterator(M, 'key+value');
 		}
-	);
+	});
 
 	// 23.1.3.5. Map.prototype.forEach ( callbackfn [ , thisArg ] )
-	CreateMethodProperty(Map.prototype, 'forEach', function (callbackFn) {
+	Object.defineProperty(Map.prototype, 'forEach', {
+		configurable: true,
+		enumerable: false,
+		writable: true,
+		value: function (callbackFn) {
 			// 1. Let M be the this value.
 			var M = this;
 			// 2. If Type(M) is not Object, throw a TypeError exception.
-			if (Type(M) !== 'object') {
+			if (typeof M !== 'object') {
 				throw new TypeError('Method Map.prototype.forEach called on incompatible receiver ' + Object.prototype.toString.call(M));
 			}
 			// 3. If M does not have a [[MapData]] internal slot, throw a TypeError exception.
@@ -232,7 +472,7 @@
 				throw new TypeError('Method Map.prototype.forEach called on incompatible receiver ' + Object.prototype.toString.call(M));
 			}
 			// 4. If IsCallable(callbackfn) is false, throw a TypeError exception.
-			if (!IsCallable(callbackFn)) {
+			if (!isCallable(callbackFn)) {
 				throw new TypeError(Object.prototype.toString.call(callbackFn) + ' is not a function.');
 			}
 			// 5. If thisArg is present, let T be thisArg; else let T be undefined.
@@ -252,14 +492,18 @@
 			// 8. Return undefined.
 			return undefined;
 		}
-	);
+	});
 
 	// 23.1.3.6. Map.prototype.get ( key )
-	CreateMethodProperty(Map.prototype, 'get', function get(key) {
+	Object.defineProperty(Map.prototype, 'get', {
+		configurable: true,
+		enumerable: false,
+		writable: true,
+		value: function get(key) {
 			// 1. Let M be the this value.
 			var M = this;
 			// 2. If Type(M) is not Object, throw a TypeError exception.
-			if (Type(M) !== 'object') {
+			if (typeof M !== 'object') {
 				throw new TypeError('Method Map.prototype.get called on incompatible receiver ' + Object.prototype.toString.call(M));
 			}
 			// 3. If M does not have a [[MapData]] internal slot, throw a TypeError exception.
@@ -271,16 +515,21 @@
 			// 5. For each Record {[[Key]], [[Value]]} p that is an element of entries, do
 			for (var i = 0; i < entries.length; i++) {
 				// a. If p.[[Key]] is not empty and SameValueZero(p.[[Key]], key) is true, return p.[[Value]].
-				if (M._keys[i] !== undefMarker && SameValueZero(M._keys[i], key)) {
+				if (M._keys[i] !== undefMarker && sameValueZero(M._keys[i], key)) {
 					return M._values[i];
 				}
 			}
 			// 6. Return undefined.
 			return undefined;
-		});
+		}
+	});
 
 	// 23.1.3.7. Map.prototype.has ( key )
-	CreateMethodProperty(Map.prototype, 'has', function has (key) {
+	Object.defineProperty(Map.prototype, 'has', {
+		configurable: true,
+		enumerable: false,
+		writable: true,
+		value: function has (key) {
 			// 1. Let M be the this value.
 			var M = this;
 			// 2. If Type(M) is not Object, throw a TypeError exception.
@@ -296,28 +545,38 @@
 			// 5. For each Record {[[Key]], [[Value]]} p that is an element of entries, do
 			for (var i = 0; i < entries.length; i++) {
 				// a. If p.[[Key]] is not empty and SameValueZero(p.[[Key]], key) is true, return true.
-				if (M._keys[i] !== undefMarker && SameValueZero(M._keys[i], key)) {
+				if (M._keys[i] !== undefMarker && sameValueZero(M._keys[i], key)) {
 					return true;
 				}
 			}
 			// 6. Return false.
 			return false;
-		});
+		}
+	});
 
 	// 23.1.3.8. Map.prototype.keys ( )
-	CreateMethodProperty(Map.prototype, 'keys', function keys () {
+	Object.defineProperty(Map.prototype, 'keys', {
+		configurable: true,
+		enumerable: false,
+		writable: true,
+		value: function keys () {
 			// 1. Let M be the this value.
 			var M = this;
 			// 2. Return ? CreateMapIterator(M, "key").
-			return CreateMapIterator(M, "key");
-		});
+			return createMapIterator(M, "key");
+		}
+	});
 
 	// 23.1.3.9. Map.prototype.set ( key, value )
-	CreateMethodProperty(Map.prototype, 'set', function set(key, value) {
+	Object.defineProperty(Map.prototype, 'set', {
+		configurable: true,
+		enumerable: false,
+		writable: true,
+		value: function set(key, value) {
 			// 1. Let M be the this value.
 			var M = this;
 			// 2. If Type(M) is not Object, throw a TypeError exception.
-			if (Type(M) !== 'object') {
+			if (typeof M !== 'object') {
 				throw new TypeError('Method Map.prototype.set called on incompatible receiver ' + Object.prototype.toString.call(M));
 			}
 			// 3. If M does not have a [[MapData]] internal slot, throw a TypeError exception.
@@ -329,7 +588,7 @@
 			// 5. For each Record {[[Key]], [[Value]]} p that is an element of entries, do
 			for (var i = 0; i < entries.length; i++) {
 				// a. If p.[[Key]] is not empty and SameValueZero(p.[[Key]], key) is true, then
-				if (M._keys[i] !== undefMarker && SameValueZero(M._keys[i], key)) {
+				if (M._keys[i] !== undefMarker && sameValueZero(M._keys[i], key)) {
 					// i. Set p.[[Value]] to value.
 					M._values[i] = value;
 					// Return M.
@@ -337,7 +596,7 @@
 				}
 			}
 			// 6. If key is -0, let key be +0.
-			if (1/key === -Infinity) {
+			if (key === -0) {
 				key = 0;
 			}
 			// 7. Let p be the Record {[[Key]]: key, [[Value]]: value}.
@@ -353,7 +612,8 @@
 			}
 			// 9. Return M.
 			return M;
-		});
+		}
+	});
 
 	// 23.1.3.10. get Map.prototype.size
 	if (supportsGetters) {
@@ -364,7 +624,7 @@
 				// 1. Let M be the this value.
 				var M = this;
 				// 2. If Type(M) is not Object, throw a TypeError exception.
-				if (Type(M) !== 'object') {
+				if (typeof M !== 'object') {
 					throw new TypeError('Method Map.prototype.size called on incompatible receiver ' + Object.prototype.toString.call(M));
 				}
 				// 3. If M does not have a [[MapData]] internal slot, throw a TypeError exception.
@@ -390,17 +650,26 @@
 	}
 
 	// 23.1.3.11. Map.prototype.values ( )
-	CreateMethodProperty(Map.prototype, 'values', function values () {
+	Object.defineProperty(Map.prototype, 'values', {
+		configurable: true,
+		enumerable: false,
+		writable: true,
+		value: function values () {
 			// 1. Let M be the this value.
 			var M = this;
 			// 2. Return ? CreateMapIterator(M, "value").
-			return CreateMapIterator(M, 'value');
+			return createMapIterator(M, 'value');
 		}
-	);
+	});
 
 	// 23.1.3.12. Map.prototype [ @@iterator ] ( )
 	// The initial value of the @@iterator property is the same function object as the initial value of the entries property.
-	CreateMethodProperty(Map.prototype, Symbol.iterator, Map.prototype.entries);
+	Object.defineProperty(Map.prototype, Symbol.iterator, {
+		configurable: true,
+		enumerable: false,
+		writable: true,
+		value: Map.prototype.entries
+	});
 
 	// 23.1.3.13. Map.prototype [ @@toStringTag ]
 	// The initial value of the @@toStringTag property is the String value "Map".
@@ -418,9 +687,9 @@
 	}
 
 	// 23.1.5.1. CreateMapIterator ( map, kind )
-	function CreateMapIterator(map, kind) {
+	function createMapIterator(map, kind) {
 		// 1. If Type(map) is not Object, throw a TypeError exception.
-		if (Type(map) !== 'object') {
+		if (typeof map !== 'object') {
 			throw new TypeError('createMapIterator called on incompatible receiver ' + Object.prototype.toString.call(map));
 		}
 		// 2. If map does not have a [[MapData]] internal slot, throw a TypeError exception.
@@ -455,21 +724,15 @@
 	}
 
 	// 23.1.5.2. The %MapIteratorPrototype% Object
-	var MapIteratorPrototype = {};
-	// Polyfill.io - We use this as a quick way to check if an object is a Map Iterator instance.
-	Object.defineProperty(MapIteratorPrototype, 'isMapIterator', {
-		configurable: false,
-		enumerable: false,
-		writable: false,
-		value: true
-	});
-
-	// 23.1.5.2.1. %MapIteratorPrototype%.next ( )
-	CreateMethodProperty(MapIteratorPrototype, 'next', function next() {
+	var MapIteratorPrototype = {
+		// Polyfill.io - We use this as a quick way to check if an object is a Map Iterator instance.
+		isMapIterator: true,
+		// 23.1.5.2.1. %MapIteratorPrototype%.next ( )
+		next: function next () {
 			// 1. Let O be the this value.
 			var O = this;
 			// 2. If Type(O) is not Object, throw a TypeError exception.
-			if (Type(O) !== 'object') {
+			if (typeof O !== 'object') {
 				throw new TypeError('Method %MapIteratorPrototype%.next called on incompatible receiver ' + Object.prototype.toString.call(O));
 			}
 			// 3. If O does not have all of the internal slots of a Map Iterator Instance (23.1.5.3), throw a TypeError exception.
@@ -484,11 +747,11 @@
 			var itemKind = O['[[MapIterationKind]]'];
 			// 7. If m is undefined, return CreateIterResultObject(undefined, true).
 			if (m === undefined) {
-				return CreateIterResultObject(undefined, true);
+				return createIterResultObject(undefined, true);
 			}
 			// 8. Assert: m has a [[MapData]] internal slot.
 			if (!m._es6Map) {
-				throw new Error(Object.prototype.toString.call(m) + ' has a [[MapData]] internal slot.');
+				throw new Error();
 			}
 			// 9. Let entries be the List that is m.[[MapData]].
 			var entries = m._keys;
@@ -510,44 +773,52 @@
 					// i. If itemKind is "key", let result be e.[[Key]].
 					if (itemKind === 'key') {
 						var result = e['[[Key]]'];
-						// ii. Else if itemKind is "value", let result be e.[[Value]].
+					// ii. Else if itemKind is "value", let result be e.[[Value]].
 					} else if (itemKind === 'value') {
-						result = e['[[Value]]'];
-						// iii. Else,
+						var result = e['[[Value]]'];
+					// iii. Else,
 					} else {
 						// 1. Assert: itemKind is "key+value".
 						if (itemKind !== 'key+value') {
 							throw new Error();
 						}
 						// 2. Let result be CreateArrayFromList(« e.[[Key]], e.[[Value]] »).
-						result = [
+						var result = [
 							e['[[Key]]'],
 							e['[[Value]]']
 						];
 					}
 					// iv. Return CreateIterResultObject(result, false).
-					return CreateIterResultObject(result, false);
+					return createIterResultObject(result, false);
 				}
 			}
 			// 13. Set O.[[Map]] to undefined.
 			O['[[Map]]'] = undefined;
 			// 14. Return CreateIterResultObject(undefined, true).
-			return CreateIterResultObject(undefined, true);
+			return createIterResultObject(undefined, true);
 		}
-	);
 
-	// 23.1.5.2.2 %MapIteratorPrototype% [ @@toStringTag ]
-	// The initial value of the @@toStringTag property is the String value "Map Iterator".
-	// This property has the attributes { [[Writable]]: false, [[Enumerable]]: false, [[Configurable]]: true }.
-
-	CreateMethodProperty(MapIteratorPrototype, Symbol.iterator, function iterator() {
+		// 23.1.5.2.2 %MapIteratorPrototype% [ @@toStringTag ]
+    // The initial value of the @@toStringTag property is the String value "Map Iterator".
+		// This property has the attributes { [[Writable]]: false, [[Enumerable]]: false, [[Configurable]]: true }.
+	};
+	Object.defineProperty(MapIteratorPrototype, Symbol.iterator, {
+		configurable: true,
+		enumerable: false,
+		writable: true,
+		value: function iterator() {
 			return this;
 		}
-	);
+	});
 
 	// Export the object
 	try {
-		CreateMethodProperty(global, 'Map', Map);
+		Object.defineProperty(global, 'Map', {
+			configurable: true,
+			enumerable: false,
+			writable: true,
+			value: Map
+		});
 	} catch (e) {
 		// IE8 throws an error here if we set enumerable to false.
 		// More info on table 2: https://msdn.microsoft.com/en-us/library/dd229916(v=vs.85).aspx

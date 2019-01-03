@@ -9,7 +9,7 @@
 		"modernizr:es5date"
 	],
 	"browsers": {
-		"ie": "<9"
+		"ie": "6 - 8"
 	},
 	"spec": "https://tc39.github.io/ecma262/#sec-date.prototype.toisostring",
 	"docs": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toISOString"

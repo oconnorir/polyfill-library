@@ -37,7 +37,7 @@
 	}
 
 	var existingProto = (window.Event && window.Event.prototype) || null;
-	function Event(type, eventInitDict) {
+	window.Event = Window.prototype.Event = function Event(type, eventInitDict) {
 		if (!type) {
 			throw new Error('Not enough arguments');
 		}
@@ -62,11 +62,6 @@
 
 		return event;
 	};
-	Event.NONE = 0;
-	Event.CAPTURING_PHASE = 1;
-	Event.AT_TARGET = 2;
-	Event.BUBBLING_PHASE = 3;
-	window.Event = Window.prototype.Event = Event;
 	if (existingProto) {
 		Object.defineProperty(window.Event, 'prototype', {
 			configurable: false,

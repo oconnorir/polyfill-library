@@ -1,1 +1,1 @@
-console.time = function time() {};
+this.console.time = function time() {};

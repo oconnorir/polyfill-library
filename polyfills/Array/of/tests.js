@@ -1,20 +1,19 @@
 /* eslint-env mocha, browser */
 /* global proclaim */
 
-it('is a function', function () {
-	proclaim.isFunction(Array.of);
-});
-
-it('has correct arity', function () {
-	proclaim.arity(Array.of, 0);
+it('has correct instance', function () {
+	proclaim.isInstanceOf(Array.of, Function);
 });
 
 it('has correct name', function () {
-	proclaim.hasName(Array.of, 'of');
+	function nameOf(fn) {
+		return Function.prototype.toString.call(fn).match(/function\s*([^\s]*)\s*\(/)[1];
+	}
+	proclaim.equal(nameOf(Array.of), 'of');
 });
 
-it('is not enumerable', function () {
-	proclaim.isNotEnumerable(Array, 'of');
+it('has correct argument length', function () {
+	proclaim.equal(Array.of.length, 0);
 });
 
 describe('returns an array with', function () {

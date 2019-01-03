@@ -1,37 +1,53 @@
-/* global ArrayCreate, Construct, CreateDataPropertyOrThrow, CreateMethodProperty, IsConstructor, ToString */
-// 22.1.2.3. Array.of ( ...items )
-CreateMethodProperty(Array, 'of', function of() {
-	// 1. Let len be the actual number of arguments passed to this function.
-	var len = arguments.length;
-	// 2. Let items be the List of arguments passed to this function.
-	var items = arguments;
-	// 3. Let C be the this value.
-	var C = this;
-	// 4. If IsConstructor(C) is true, then
-	if (IsConstructor(C)) {
-		// a. Let A be ? Construct(C, « len »).
-		var A = Construct(C, [len]);
-		// 5. Else,
+/*! https://mths.be/array-of v0.1.0 by @mathias */
+(function () {
+	'use strict';
+	var defineProperty = (function () {
+		// IE 8 only supports `Object.defineProperty` on DOM elements
+		try {
+			var object = {};
+			var $defineProperty = Object.defineProperty;
+			var result = $defineProperty(object, object, object) && $defineProperty;
+		} catch (error) { /**/ }
+		return result;
+	}());
+	var isConstructor = function isConstructor(Constructor) {
+		try {
+			return !!new Constructor();
+		} catch (_) {
+			return false;
+		}
+	};
+	var of = function of() {
+		var items = arguments;
+		var length = items.length;
+		var Me = this;
+		var result = isConstructor(Me) ? new Me(length) : new Array(length);
+		var index = 0;
+		var value;
+		while (index < length) {
+			value = items[index];
+			if (defineProperty) {
+				defineProperty(result, index, {
+					'value': value,
+					'writable': true,
+					'enumerable': true,
+					'configurable': true
+				});
+			} else {
+				result[index] = value;
+			}
+			index += 1;
+		}
+		result.length = length;
+		return result;
+	};
+	if (defineProperty) {
+		defineProperty(Array, 'of', {
+			'value': of,
+			'configurable': true,
+			'writable': true
+		});
 	} else {
-		// a. Let A be ? ArrayCreate(len).
-		var A = ArrayCreate(len);
+		Array.of = of;
 	}
-	// 6. Let k be 0.
-	var k = 0;
-	// 7. Repeat, while k < len
-	while (k < len) {
-		// a. Let kValue be items[k].
-		var kValue = items[k];
-		// b. Let Pk be ! ToString(k).
-		var Pk = ToString(k);
-		// c. Perform ? CreateDataPropertyOrThrow(A, Pk, kValue).
-		CreateDataPropertyOrThrow(A, Pk, kValue);
-		// d. Increase k by 1.
-		var k = k + 1;
-
-	}
-	// 8. Perform ? Set(A, "length", len, true)
-	A["length"] = len;
-	// 9. Return A.
-	return A;
-});
+}());

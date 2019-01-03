@@ -1,1 +1,1 @@
-console.dirxml = function dirxml() {};
+this.console.dirxml = function dirxml() {};

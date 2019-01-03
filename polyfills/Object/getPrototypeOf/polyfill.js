@@ -1,4 +1,3 @@
-/* global CreateMethodProperty */
 // Based on: https://github.com/es-shims/es5-shim/blob/master/es5-sham.js
 
 // https://github.com/es-shims/es5-shim/issues#issue/2
@@ -8,7 +7,7 @@
 // sure, and webreflection says ^_^
 // ... this will nerever possibly return null
 // ... Opera Mini breaks here with infinite loops
-CreateMethodProperty(Object, 'getPrototypeOf', function getPrototypeOf(object) {
+Object.getPrototypeOf = function getPrototypeOf(object) {
 	if (object !== Object(object)) {
 		throw new TypeError('Object.getPrototypeOf called on non-object');
 	}
@@ -26,4 +25,4 @@ CreateMethodProperty(Object, 'getPrototypeOf', function getPrototypeOf(object) {
 		// IE <11), but that's the best we can do.
 		return null;
 	}
-});
+};

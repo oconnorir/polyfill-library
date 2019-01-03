@@ -4,18 +4,14 @@
 	],
 	"browsers": {
 		"chrome": "<50",
-		"edge": "*",
-		"edge_mob": "*",
 		"firefox": "<19",
-		"safari": "<11",
-		"ie": ">=10",
+		"safari": "*",
+		"ie": "10 - 11",
 		"opera": "*"
 	},
 	"dependencies": [
-		"_ESAbstract.CreateMethodProperty",
-		"_TypedArray",
 		"atob",
-		"Blob"
+		"Object.defineProperty"
 	],
 	"docs": "https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob",
 	"license": "MIT"

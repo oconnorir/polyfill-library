@@ -7,8 +7,6 @@
 	"browsers": {
 		"bb": "6 - 10",
 		"chrome": "<=45",
-		"edge": "*",
-		"edge_mob": "*",
 		"firefox": "3.6 - 24",
 		"ie": "*",
 		"ie_mob": "10 - *",
@@ -21,14 +19,7 @@
 		"samsung_mob": "<5"
 	},
 	"dependencies": [
-		"_ESAbstract.CreateMethodProperty",
-		"_ESAbstract.ToObject",
-		"_ESAbstract.ToLength",
-		"_ESAbstract.Get",
-		"_ESAbstract.IsCallable",
-		"_ESAbstract.ToBoolean",
-		"_ESAbstract.Call",
-		"_ESAbstract.ToString"
+		"Object.defineProperty"
 	],
 	"spec": "https://tc39.github.io/ecma262/#sec-array.prototype.findIndex",
 	"docs": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/findIndex"

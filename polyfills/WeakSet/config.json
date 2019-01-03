@@ -7,7 +7,7 @@
 		"ie": "7 - 11",
 		"ie_mob": "10 - 11",
 		"safari": "<9",
-		"chrome": "<43",
+		"chrome": "<38",
 		"firefox": "<34",
 		"android": "*",
 		"ios_saf": "<9",
@@ -16,20 +16,11 @@
 		"bb": "10 - *"
 	},
 	"dependencies": [
-		"_ESAbstract.CreateMethodProperty",
-		"_ESAbstract.OrdinaryCreateFromConstructor",
-		"_ESAbstract.Get",
-		"_ESAbstract.IsCallable",
-		"_ESAbstract.GetIterator",
-		"_ESAbstract.IteratorStep",
-		"_ESAbstract.IteratorValue",
-		"_ESAbstract.Call",
-		"_ESAbstract.IteratorClose",
-		"_ESAbstract.IsArray",
 		"Object.defineProperty",
-		"_ESAbstract.Type",
-		"_ESAbstract.SameValueZero",
-		"Symbol"
+		"Array.prototype.forEach",
+		"Date.now"
 	],
+	"repo": "https://github.com/webcomponents/webcomponentsjs",
+	"license": "https://github.com/webcomponents/webcomponentsjs/blob/master/LICENSE.md",
 	"docs": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet"
 }

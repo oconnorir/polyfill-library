@@ -1,1 +1,1 @@
-console.table = function table() {};
+this.console.table = function table() {};

@@ -1,1 +1,1 @@
-console.groupCollapsed = function groupCollapsed() {};
+this.console.groupCollapsed = function groupCollapsed() {};

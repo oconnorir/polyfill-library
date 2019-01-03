@@ -1,20 +1,8 @@
-/* eslint-env mocha */
-/* globals proclaim */
+/* eslint-env mocha, browser */
+/* global proclaim */
 
-it('is a function', function () {
-	proclaim.isFunction(Object.freeze);
-});
-
-it('has correct arity', function () {
-	proclaim.arity(Object.freeze, 1);
-});
-
-it('has correct name', function () {
-	proclaim.hasName(Object.freeze, 'freeze');
-});
-
-it('is not enumerable', function () {
-	proclaim.isNotEnumerable(Object, 'freeze');
+it("Should has a length of 1", function() {
+	proclaim.equal(Object.freeze.length, 1);
 });
 
 var hasES6ObjectFreeze = true;

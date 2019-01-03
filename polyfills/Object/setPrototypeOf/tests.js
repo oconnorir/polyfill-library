@@ -1,22 +1,5 @@
-/* eslint-env mocha */
-/* globals proclaim */
-
-it('is a function', function () {
-	proclaim.isFunction(Object.setPrototypeOf);
-});
-
-it('has correct arity', function () {
-	proclaim.arity(Object.setPrototypeOf, 2);
-});
-
-it('has correct name', function () {
-	proclaim.hasName(Object.setPrototypeOf, 'setPrototypeOf');
-});
-
-it('is not enumerable', function () {
-	proclaim.isNotEnumerable(Object, 'setPrototypeOf');
-});
-
+/* eslint-env mocha, browser */
+/* global proclaim */
 
 it('changes prototype to null objects', function() {
 	var obj = {a: 123};

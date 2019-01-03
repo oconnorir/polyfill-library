@@ -7,9 +7,7 @@
 		"default"
 	],
 	"browsers": {
-		"edge": "<14",
-		"edge_mob": "<14",
-		"ie": "*",
+		"ie": "<14",
 		"safari": "4 - 6.0",
 		"ie_mob": "10 - *"
 	},

@@ -1,21 +1,5 @@
-/* eslint-env mocha */
-/* globals proclaim */
-
-it('is a function', function () {
-	proclaim.isFunction(Array.prototype.forEach);
-});
-
-it('has correct arity', function () {
-	proclaim.arity(Array.prototype.forEach, 1);
-});
-
-it('has correct name', function () {
-	proclaim.hasName(Array.prototype.forEach, 'forEach');
-});
-
-it('is not enumerable', function () {
-	proclaim.isNotEnumerable(Array.prototype, 'forEach');
-});
+/* eslint-env mocha, browser */
+/* global proclaim */
 
 var testSubject;
 

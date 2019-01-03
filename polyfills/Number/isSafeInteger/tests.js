@@ -1,20 +1,12 @@
-/* eslint-env mocha */
-/* globals proclaim */
+/* eslint-env mocha, browser*/
+/* global proclaim, it */
 
-it('is a function', function () {
-	proclaim.isFunction(Number.isSafeInteger);
+it('has correct instance', function () {
+	proclaim.isInstanceOf(Number.isSafeInteger, Function);
 });
 
-it('has correct arity', function () {
-	proclaim.arity(Number.isSafeInteger, 1);
-});
-
-it('has correct name', function () {
-	proclaim.hasName(Number.isSafeInteger, 'isSafeInteger');
-});
-
-it('is not enumerable', function () {
-	proclaim.isNotEnumerable(Number, 'isSafeInteger');
+it('has correct argument length', function () {
+	proclaim.equal(Number.isSafeInteger.length, 1);
 });
 
 it('returns false if argument is not a number literal', function () {

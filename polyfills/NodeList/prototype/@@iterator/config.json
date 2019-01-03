@@ -1,7 +1,5 @@
 {
 	"browsers": {
-		"edge": "*",
-		"edge_mob": "*",
 		"ie": "9 - *",
 		"ie_mob": "9 - *",
 		"safari": "<10",

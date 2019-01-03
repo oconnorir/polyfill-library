@@ -1,5 +1,5 @@
 /* eslint-env mocha, browser */
-/* global proclaim, Promise */
+/* global proclaim */
 
 it('has correct instance', function () {
 	proclaim.isInstanceOf(Promise, Function);

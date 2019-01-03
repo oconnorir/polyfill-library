@@ -1,9 +1,4 @@
-/* global CreateMethodProperty */
-
-var toString = ({}).toString;
-var split = ''.split;
-
-CreateMethodProperty(Object, 'getOwnPropertyNames', function getOwnPropertyNames(object) {
+Object.getOwnPropertyNames = function getOwnPropertyNames(object) {
 	var buffer = [];
 	var key;
 
@@ -15,8 +10,7 @@ CreateMethodProperty(Object, 'getOwnPropertyNames', function getOwnPropertyNames
 		throw new TypeError('Cannot convert undefined or null to object');
 	}
 
-	// Polyfill.io fallback for non-array-like strings which exist in some ES3 user-agents (IE 8)
-	object = toString.call(object) == '[object String]' ? split.call(object, '') : Object(object);
+	object = Object(object);
 
 	// Enumerable properties only
 	for (key in object) {
@@ -31,4 +25,4 @@ CreateMethodProperty(Object, 'getOwnPropertyNames', function getOwnPropertyNames
 	}
 
 	return buffer;
-});
+};

@@ -8,7 +8,7 @@
 		"caniuse:datauri"
 	],
 	"browsers": {
-		"ie": "<10"
+		"ie": "6 - 9"
 	},
 	"license": "MIT",
 	"repo": "http://www.webtoolkit.info/javascript-base64.html",

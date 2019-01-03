@@ -1,4 +1,3 @@
-/* global CreateMethodProperty */
 // ES6-shim 0.16.0 (c) 2013-2014 Paul Miller (http://paulmillr.com)
 // ES6-shim may be freely distributed under the MIT license.
 // For more details and documentation:
@@ -38,10 +37,10 @@
 		return target;
 	};
 	// used as fallback when no promotion is possible
-	var createAndCopy = function setPrototypeOf(origin, proto) {
+	var createAndCopy = function (origin, proto) {
 		return copyDescriptors(create(proto), origin);
 	};
-	var set, sPOf;
+	var set, setPrototypeOf;
 	try {
 		// this might fail for various reasons
 		// ignore if Chrome cought it at runtime
@@ -49,7 +48,7 @@
 		set.call({}, null);
 		// setter not poisoned, it can promote
 		// Firefox, Chrome
-		sPOf = function setPrototypeOf(origin, proto) {
+		setPrototypeOf = function (origin, proto) {
 			set.call(origin, proto);
 			return origin;
 		};
@@ -59,7 +58,7 @@
 		// if proto does not work, needs to fallback
 		// some Opera, Rhino, ducktape
 		if (set instanceof Object) {
-			sPOf = createAndCopy;
+			setPrototypeOf = createAndCopy;
 		} else {
 			// verify if null objects are buggy
 			/* eslint-disable no-proto */
@@ -68,7 +67,7 @@
 			// if null objects are buggy
 			// nodejs 0.8 to 0.10
 			if (set instanceof Object) {
-				sPOf = function setPrototypeOf(origin, proto) {
+				setPrototypeOf = function (origin, proto) {
 					// use such bug to promote
 					/* eslint-disable no-proto */
 					origin.__proto__ = proto;
@@ -78,7 +77,7 @@
 			} else {
 				// try to use proto or fallback
 				// Safari, old Firefox, many others
-				sPOf = function setPrototypeOf(origin, proto) {
+				setPrototypeOf = function (origin, proto) {
 					// if proto is not null
 					if (getPrototypeOf(origin)) {
 						// use __proto__ to promote
@@ -94,5 +93,5 @@
 			}
 		}
 	}
-	CreateMethodProperty(Object, 'setPrototypeOf', sPOf);
+	Object.setPrototypeOf = setPrototypeOf;
 }());

@@ -3,8 +3,7 @@
 const assert = require('proclaim');
 const setsToArrays = require('../../utils/sets_to_arrays');
 
-const Polyfillio = require('../../../lib/index');
-const polyfillio = new Polyfillio;
+const polyfillio = require('../../../lib/index');
 
 describe("polyfillio", () => {
 	describe(".getPolyfills(features)", () => {
@@ -19,30 +18,13 @@ describe("polyfillio", () => {
 			return polyfillio.getPolyfills(input).then(result => assert.deepEqual(setsToArrays(result), {}));
 		});
 
-		it("should return polyfills for unknown UA when unknown is not set", () => {
+		it("should not return polyfills for unknown UA when unknown is not set", () => {
 			return polyfillio.getPolyfills({
 				features: {
 					'Math.sign': {}
 				},
 				uaString: ''
-			}).then(result => assert.deepEqual(setsToArrays(result), {
-				'Math.sign': {
-					"flags": ["gated"]
-				},
-				"Object.defineProperty": {
-					"aliasOf": [
-						"Math.sign",
-						"_ESAbstract.CreateMethodProperty"
-					],
-					"flags": ["gated"]
-				},
-				"_ESAbstract.CreateMethodProperty": {
-					"aliasOf": [
-						"Math.sign"
-					],
-					"flags": ["gated"]
-				}
-			}));
+			}).then(result => assert.deepEqual(setsToArrays(result), {}));
 		});
 
 		it("should return no polyfills for unknown UA when unknown is set to ignore", () => {
@@ -64,20 +46,7 @@ describe("polyfillio", () => {
 				uaString: ''
 			}).then(result => assert.deepEqual(setsToArrays(result), {
 				'Math.sign': {
-					"flags": ["gated"]
-				},
-				"Object.defineProperty": {
-					"aliasOf": [
-						"Math.sign",
-						"_ESAbstract.CreateMethodProperty"
-					],
-					"flags": ["gated"]
-				},
-				"_ESAbstract.CreateMethodProperty": {
-					"aliasOf": [
-						"Math.sign"
-					],
-					"flags": ["gated"]
+					"flags": []
 				}
 			}));
 		});
@@ -91,20 +60,7 @@ describe("polyfillio", () => {
 					unknown: 'polyfill',
 				}).then(result => assert.deepEqual(setsToArrays(result), {
 					'Math.sign': {
-						"flags": ["gated"]
-					},
-					"Object.defineProperty": {
-						"aliasOf": [
-							"Math.sign",
-							"_ESAbstract.CreateMethodProperty"
-						],
-						"flags": ["gated"]
-					},
-					"_ESAbstract.CreateMethodProperty": {
-						"aliasOf": [
-							"Math.sign"
-						],
-						"flags": ["gated"]
+						"flags": []
 					}
 				}));
 		});

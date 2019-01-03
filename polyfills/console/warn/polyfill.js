@@ -1,1 +1,1 @@
-console.warn = console.log;
+this.console.warn = this.console.log;

@@ -1,20 +1,12 @@
-/* eslint-env mocha */
-/* globals proclaim */
+/* eslint-env mocha, browser */
+/* global proclaim */
 
-it('is a function', function () {
-	proclaim.isFunction(String.prototype.repeat);
+it('has correct instance', function () {
+	proclaim.isInstanceOf(String.prototype.repeat, Function);
 });
 
-it('has correct arity', function () {
-	proclaim.arity(String.prototype.repeat, 1);
-});
-
-it('has correct name', function () {
-	proclaim.hasName(String.prototype.repeat, 'repeat');
-});
-
-it('is not enumerable', function () {
-	proclaim.isNotEnumerable(String.prototype, 'repeat');
+it('has correct argument length', function () {
+	proclaim.equal(String.prototype.repeat.length, 1);
 });
 
 // excellent tests provided by https://github.com/mathiasbynens/String.prototype.repeat
@@ -37,15 +29,15 @@ it('works with strings', function () {
 it('throws invalid counts', function () {
 	proclaim.throws(function () {
 		'abc'.repeat(-Infinity);
-	}, RangeError);
+	});
 
 	proclaim.throws(function () {
 		'abc'.repeat(-1);
-	}, RangeError);
+	});
 
 	proclaim.throws(function() {
 		'abc'.repeat(+Infinity);
-	}, RangeError);
+	});
 });
 
 it('works with coercible objects', function () {
@@ -66,7 +58,8 @@ it('works with coercible objects', function () {
 	}, [2]), 'abcabc');
 });
 
-var supportsStrictModeTests = (function () {
+var
+supportsStrictModeTests = (function () {
 	'use strict';
 
 	return this === undefined;

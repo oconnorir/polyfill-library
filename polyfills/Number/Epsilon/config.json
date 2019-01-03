@@ -5,7 +5,7 @@
 		"Number.EPSILON"
 	],
 	"browsers": {
-		"ie": "*",
+		"ie": "<12",
 		"firefox": "<25",
 		"safari": "<9"
 	},

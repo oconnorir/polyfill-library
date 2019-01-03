@@ -1,5 +1,5 @@
 /* eslint-env mocha, browser */
-/* global proclaim, Symbol */
+/* global proclaim */
 
 function getDOMTokenList () {
 	var div = document.createElement('div');

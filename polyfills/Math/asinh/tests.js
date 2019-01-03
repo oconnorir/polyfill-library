@@ -1,21 +1,8 @@
-/* eslint-env mocha */
-/* globals proclaim */
+/* eslint-env mocha, browser */
+/* global proclaim */
 
-it('is a function', function () {
-	proclaim.isFunction(Math.asinh);
-});
-
-it('has correct arity', function () {
-	proclaim.arity(Math.asinh, 1);
-});
-
-it('has correct name', function () {
-	proclaim.hasName(Math.asinh, 'asinh');
-});
-
-it('is not enumerable', function () {
-	proclaim.isNotEnumerable(Math, 'asinh');
-});
+// Returns an implementation-dependent approximation to the inverse hyperbolic sine of x.
+// See: https://people.mozilla.org/~jorendorff/es6-draft.html#sec-math.asinh
 
 it("Should return NaN if the parameter is NaN", function() {
 	var x = Math.asinh(NaN);

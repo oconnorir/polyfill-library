@@ -1,20 +1,11 @@
 /* eslint-env mocha, browser */
 /* global proclaim */
 
-it('is a function', function () {
-	proclaim.isFunction(Array.prototype.entries);
-});
-
-it('has correct arity', function () {
-	proclaim.arity(Array.prototype.entries, 0);
-});
-
-it('has correct name', function () {
-	proclaim.hasName(Array.prototype.entries, 'entries');
-});
-
-it('is not enumerable', function () {
-	proclaim.isNotEnumerable(Array.prototype, 'entries');
+it('is named \'entries\'', function () {
+	// Don't fail tests just because browser doesn't support the Function.name polyfill
+	if ([].entries.name) {
+		proclaim.equal([].entries.name, 'entries');
+	}
 });
 
 it('returns a next-able object', function () {
@@ -39,4 +30,15 @@ it('finally returns a done object', function () {
 		value: undefined,
 		done: true
 	});
+});
+
+it('property isn\'t enumerable', function () {
+	var array = ['val1', 'val2'];
+	var enumerableLength = 0;
+
+	for (var i in array) { // eslint-disable-line no-unused-vars
+		enumerableLength++;
+	}
+
+	proclaim.equal(enumerableLength, array.length);
 });

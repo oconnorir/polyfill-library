@@ -4,7 +4,7 @@
 		"es2015"
 	],
 	"browsers": {
-		"ie": "*",
+		"ie": "<12",
 		"ie_mob" : "*",
 		"firefox": "<31",
 		"firefox_mob":"<32",
@@ -17,9 +17,6 @@
 		"op_mob": "*",
 		"bb": "*"
 	},
-	"dependencies": [
-		"Object.defineProperty"
-	],
 	"license": "MIT",
 	"spec": "http://www.ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer",
 	"docs": "https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER"

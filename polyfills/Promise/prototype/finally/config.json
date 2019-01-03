@@ -1,6 +1,5 @@
 {
 	"aliases": [
-		"es2018"
 	],
 	"browsers": {
 		"android": ">4.4",
@@ -8,20 +7,14 @@
 		"chrome": ">31 <63",
 		"firefox": ">28",
 		"ios_saf": ">7.1",
-		"edge": "*",
-		"edge_mob": "*",
 		"ie": ">12",
 		"ie_mob": "*",
 		"opera": ">19",
 		"op_mini": "*",
 		"safari": ">7",
-		"firefox_mob": ">28",
-		"samsung_mob": "*"
+		"firefox_mob": ">28"
 	},
 	"dependencies": [
-		"_ESAbstract.CreateMethodProperty",
-		"_ESAbstract.IsCallable",
-		"_ESAbstract.SpeciesConstructor",
 		"Promise",
 		"Function.prototype.bind"
 	],

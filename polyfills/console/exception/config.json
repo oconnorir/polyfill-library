@@ -3,7 +3,7 @@
 		"caniuse:console-basic"
 	],
 	"browsers": {
-		"ie": "*",
+		"ie": "6 - 11",
 		"firefox": "1 - 4",
 		"samsung_mob": "*"
 	},
@@ -11,6 +11,6 @@
 		"Window",
 		"console"
 	],
-	"spec": "https://console.spec.whatwg.org",
+	"spec": "https://github.com/DeveloperToolsWG/console-object/blob/master/api.md",
 	"docs": "https://developer.mozilla.org/en/docs/Web/API/console"
 }

@@ -1,4 +1,4 @@
-(function (global, undef) {
+(function (global, undefined) {
     "use strict";
 
     if (global.setImmediate) {
@@ -9,10 +9,10 @@
     var tasksByHandle = {};
     var currentlyRunningATask = false;
     var doc = global.document;
-    var setImmediatePolyfill;
+    var setImmediate;
 
     function addFromSetImmediateArguments(args) {
-        tasksByHandle[nextHandle] = partiallyApplied.apply(undef, args);
+        tasksByHandle[nextHandle] = partiallyApplied.apply(undefined, args);
         return nextHandle++;
     }
 
@@ -22,7 +22,7 @@
         var args = [].slice.call(arguments, 1);
         return function() {
             if (typeof handler === "function") {
-                handler.apply(undef, args);
+                handler.apply(undefined, args);
             } else {
                 (new Function("" + handler))();
             }
@@ -55,7 +55,7 @@
     }
 
     function installNextTickImplementation() {
-        setImmediatePolyfill = function setImmediate(handler) { // eslint-disable-line no-unused-vars
+        setImmediate = function() {
             var handle = addFromSetImmediateArguments(arguments);
             process.nextTick(partiallyApplied(runIfPresent, handle));
             return handle;
@@ -97,7 +97,7 @@
             global.attachEvent("onmessage", onGlobalMessage);
         }
 
-        setImmediatePolyfill = function setImmediate(handler) { // eslint-disable-line no-unused-vars
+        setImmediate = function() {
             var handle = addFromSetImmediateArguments(arguments);
             global.postMessage(messagePrefix + handle, "*");
             return handle;
@@ -111,7 +111,7 @@
             runIfPresent(handle);
         };
 
-        setImmediatePolyfill = function setImmediate(handler) { // eslint-disable-line no-unused-vars
+        setImmediate = function() {
             var handle = addFromSetImmediateArguments(arguments);
             channel.port2.postMessage(handle);
             return handle;
@@ -120,7 +120,7 @@
 
     function installReadyStateChangeImplementation() {
         var html = doc.documentElement;
-        setImmediatePolyfill = function setImmediate(handler) { // eslint-disable-line no-unused-vars
+        setImmediate = function() {
             var handle = addFromSetImmediateArguments(arguments);
             // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
             // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
@@ -137,7 +137,7 @@
     }
 
     function installSetTimeoutImplementation() {
-        setImmediatePolyfill = function setImmediate(handler) { // eslint-disable-line no-unused-vars
+        setImmediate = function() {
             var handle = addFromSetImmediateArguments(arguments);
             setTimeout(partiallyApplied(runIfPresent, handle), 0);
             return handle;
@@ -170,6 +170,6 @@
         installSetTimeoutImplementation();
     }
 
-    attachTo.setImmediate = setImmediatePolyfill;
+    attachTo.setImmediate = setImmediate;
     attachTo.clearImmediate = clearImmediate;
 }(this)); // eslint-disable-line no-undef

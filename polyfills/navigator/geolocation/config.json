@@ -5,7 +5,7 @@
 		"Navigator.prototype.geolocation"
 	],
 	"browsers": {
-		"ie": "<9",
+		"ie": "6 - 8",
 		"opera": "15",
 		"safari": "4"
 	},

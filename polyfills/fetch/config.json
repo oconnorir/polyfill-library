@@ -2,9 +2,7 @@
 	"browsers": {
 		"android": "* - 4.4.4",
 		"bb": "10 - *",
-		"edge": "<15",
-		"edge_mob": "<15",
-		"ie": "*",
+		"ie": "< 15",
 		"ie_mob": "*",
 		"firefox": "* - 38",
 		"opera": "* - 28",

@@ -1,4 +1,3 @@
-/* global Symbol */
 // URL Polyfill
 // Draft specification: https://url.spec.whatwg.org
 
@@ -33,20 +32,10 @@
     try {
       if (origURL) {
         nativeURL = new global.URL('http://example.com');
-        if ('searchParams' in nativeURL) {
-					var url = new URL('http://example.com');
-					url.search = 'a=1&b=2';
-					if (url.href === 'http://example.com/?a=1&b=2') {
-						url.search = '';
-						if (url.href === 'http://example.com/') {
-							return;
-						}
-					}
-				}
-        if (!('href' in nativeURL)) {
-					nativeURL = undefined;
-				}
-				nativeURL = undefined;
+        if ('searchParams' in nativeURL)
+          return;
+        if (!('href' in nativeURL))
+          nativeURL = undefined;
       }
     } catch (_) {}
 
@@ -244,7 +233,7 @@
       forEach: {
         value: function(callback) {
           var thisArg = (arguments.length > 1) ? arguments[1] : undefined;
-          this._list.forEach(function(pair) {
+          this._list.forEach(function(pair, index) {
             callback.call(thisArg, pair.value, pair.name);
           });
 
@@ -445,7 +434,7 @@
       function update_steps() {
         query_object._setList(instance.search ? urlencoded_parse(instance.search.substring(1)) : []);
         query_object._update_steps();
-      }
+      };
 
       return self;
     }

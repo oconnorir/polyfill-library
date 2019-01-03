@@ -2,8 +2,7 @@
 	"aliases": [
 	],
 	"browsers": {
-		"edge": "15",
-		"edge_mob": "15"
+		"ie": "15"
 	},
 	"dependencies": [
 		"IntersectionObserver",

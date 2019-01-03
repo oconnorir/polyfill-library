@@ -1,1 +1,1 @@
-console.info = console.log;
+this.console.info = this.console.log;

@@ -1,4 +1,3 @@
-/* global Symbol */
 // A modification of https://github.com/medikoo/es6-iterator
 // Copyright (C) 2013-2015 Mariusz Nowak (www.medikoo.com)
 

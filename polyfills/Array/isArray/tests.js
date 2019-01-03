@@ -1,20 +1,19 @@
 /* eslint-env mocha, browser */
 /* global proclaim */
 
-it('is a function', function () {
-	proclaim.isFunction(Array.isArray);
-});
-
-it('has correct arity', function () {
-	proclaim.arity(Array.isArray, 1);
+it('has correct instance', function () {
+	proclaim.isInstanceOf(Array.isArray, Function);
 });
 
 it('has correct name', function () {
-	proclaim.hasName(Array.isArray, 'isArray');
+	function nameOf(fn) {
+		return Function.prototype.toString.call(fn).match(/function\s*([^\s]*)\s*\(/)[1];
+	}
+	proclaim.equal(nameOf(Array.isArray), 'isArray');
 });
 
-it('is not enumerable', function () {
-	proclaim.isNotEnumerable(Array, 'isArray');
+it('has correct argument length', function () {
+	proclaim.equal(Array.isArray.length, 1);
 });
 
 describe('returns true with', function () {

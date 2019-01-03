@@ -7,8 +7,6 @@
 		"android": "*",
 		"bb": "*",
 		"chrome": "1 - 37",
-		"edge": "*",
-		"edge_mob": "*",
 		"firefox": "1 - 24",
 		"ie": "*",
 		"ie_mob": "10 - *",
@@ -20,10 +18,6 @@
 		"safari": "4 - *",
 		"firefox_mob": "1 - 24"
 	},
-	"dependencies": [
-		"_ESAbstract.CreateMethodProperty",
-		"_ESAbstract.ToUint32"
-	],
 	"docs": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/clz32",
 	"spec": "https://tc39.github.io/ecma262/#sec-math.clz32"
 }

@@ -3,8 +3,6 @@
 		"android": "*",
 		"bb": "*",
 		"chrome": "*",
-		"edge": "*",
-		"edge_mob": "*",
 		"firefox": "*",
 		"ios_chr": "*",
 		"ios_saf": "*",
@@ -21,7 +19,7 @@
 		"Object.create",
 		"Object.defineProperty",
 		"Object.setPrototypeOf",
-		"String.prototype.includes"
+		"String.prototype.contains"
 	],
 	"license": "MIT",
 	"repo": "https://github.com/medikoo/es6-iterator"

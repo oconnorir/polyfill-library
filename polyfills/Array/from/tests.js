@@ -1,20 +1,19 @@
-/* eslint-env mocha */
-/* globals proclaim, Map, Symbol, Set */
+/* eslint-env mocha, browser */
+/* global proclaim */
 
-it('is a function', function () {
-	proclaim.isFunction(Array.from);
-});
-
-it('has correct arity', function () {
-	proclaim.arity(Array.from, 1);
+it('has correct instance', function () {
+	proclaim.isInstanceOf(Array.from, Function);
 });
 
 it('has correct name', function () {
-	proclaim.hasName(Array.from, 'from');
+	function nameOf(fn) {
+		return Function.prototype.toString.call(fn).match(/function\s*([^\s]*)\s*\(/)[1];
+	}
+	proclaim.equal(nameOf(Array.from), 'from');
 });
 
-it('is not enumerable', function () {
-	proclaim.isNotEnumerable(Array, 'from');
+it('has correct argument length', function () {
+	proclaim.equal(Array.from.length, 1);
 });
 
 describe('returns an array with', function () {
@@ -92,6 +91,27 @@ describe('returns an array with', function () {
 				}
 			}
 		}
+
+		it('can convert from a user-defined iterator', function () {
+			function iterator(cnt) {
+				return {
+					next: function () {
+						return cnt === 0
+							? {
+								done: true
+							}
+							: {
+								value: cnt--,
+								done: false
+							};
+					}
+				};
+			}
+			proclaim.deepEqual(Array.from(iterator(0)), []);
+			proclaim.deepEqual(Array.from(iterator(1)), [1]);
+			proclaim.deepEqual(Array.from(iterator(2)), [2, 1]);
+			proclaim.deepEqual(Array.from(iterator(3)), [3, 2, 1]);
+		});
 
 		if ('Symbol' in window && 'iterator' in Symbol) {
 			it('can understand objects which have a property named Symbol.iterator', function () {

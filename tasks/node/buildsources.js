@@ -3,7 +3,7 @@
 const fs = require('graceful-fs');
 const path = require('path');
 const uglify = require('uglify-js');
-const babel = require('babel-core');
+const babel = require("babel-core");
 const mkdirp = require('mkdirp');
 const tsort = require('tsort');
 const denodeify = require('denodeify');
@@ -58,20 +58,6 @@ function checkForCircularDependencies(polyfills) {
 	catch (err) {
 		return Promise.reject('\nThere is a circle in the dependency graph.\nCheck the `dependencies` property of polyfill config files that have recently changed, and ensure that they do not form a circle of references.' + err);
 	}
-}
-
-function checkDependenciesExist(polyfills) {
-
-	for (const polyfill of polyfills) {
-		for (const dependency of polyfill.dependencies) {
-			if (!polyfills.some(function (polyfill) {
-				return dependency === polyfill.name;
-			})) {
-				return Promise.reject(`Polyfill ${polyfill.name} depends on ${dependency}, which does not exist within the polyfill-service. Recommended to either add the missing polyfill or remove the dependency.`);
-			}
-		}
-	}
-	return Promise.resolve();
 }
 
 function writeAliasFile(polyfills, dir) {
@@ -267,7 +253,6 @@ Promise.resolve()
 		)
 	))
 	.then(polyfills => checkForCircularDependencies(polyfills)
-		.then(() => checkDependenciesExist(polyfills))
 		.then(() => makeDirectory(dest))
 		.then(() => console.log('Waiting for files to be written to disk...'))
 		.then(() => writeAliasFile(polyfills, dest))
@@ -277,7 +262,7 @@ Promise.resolve()
 	)
 	.then(() => console.log('Sources built successfully'))
 	.catch(e => {
-		console.log(JSON.stringify(e));
+		console.log(e);
 		process.exit(1);
 	})
 ;

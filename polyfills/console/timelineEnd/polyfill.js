@@ -1,1 +1,1 @@
-console.timelineEnd = function timelineEnd() {};
+this.console.timelineEnd = function timelineEnd() {};

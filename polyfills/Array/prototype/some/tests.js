@@ -1,21 +1,7 @@
-/* eslint-env mocha */
-/* globals proclaim */
+/* eslint-env mocha, browser */
+/* global proclaim */
 
-it('is a function', function () {
-	proclaim.isFunction(Array.prototype.some);
-});
-
-it('has correct arity', function () {
-	proclaim.arity(Array.prototype.some, 1);
-});
-
-it('has correct name', function () {
-	proclaim.hasName(Array.prototype.some, 'some');
-});
-
-it('is not enumerable', function () {
-	proclaim.isNotEnumerable(Array.prototype, 'some');
-});
+// See: https://people.mozilla.org/~jorendorff/es6-draft.html#sec-array.prototype.some
 
 beforeEach(function() {
 	this.array = [0, 2, 4, 6, 8, 10, 12, 14];

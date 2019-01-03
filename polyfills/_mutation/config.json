@@ -3,8 +3,6 @@
 		"android": "*",
 		"bb": "*",
 		"chrome": "*",
-		"edge": "*",
-		"edge_mob": "*",
 		"firefox": "*",
 		"ios_chr": "*",
 		"ios_saf": "*",
@@ -17,7 +15,7 @@
 		"samsung_mob": "*"
 	},
 	"dependencies": [
-		"document",
+		"Document",
 		"Element"
 	]
 }

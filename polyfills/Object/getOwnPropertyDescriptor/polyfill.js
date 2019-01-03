@@ -1,5 +1,4 @@
-/* global CreateMethodProperty */
-(function () {
+(function() {
 	var call = Function.prototype.call;
 	var prototypeOfObject = Object.prototype;
 	var owns = call.bind(prototypeOfObject.hasOwnProperty);
@@ -39,7 +38,7 @@
 	if (!Object.getOwnPropertyDescriptor || getOwnPropertyDescriptorFallback) {
 	    var ERR_NON_OBJECT = "Object.getOwnPropertyDescriptor called on a non-object: ";
 
-	    CreateMethodProperty(Object, 'getOwnPropertyDescriptor', function getOwnPropertyDescriptor(object, property) {
+	    Object.getOwnPropertyDescriptor = function getOwnPropertyDescriptor(object, property) {
 	        if ((typeof object != "object" && typeof object != "function") || object === null) {
 	            throw new TypeError(ERR_NON_OBJECT + object);
 	        }
@@ -98,6 +97,6 @@
 	        descriptor.value = object[property];
 			descriptor.writable = true;
 	        return descriptor;
-	    });
+	    };
 	}
 }());

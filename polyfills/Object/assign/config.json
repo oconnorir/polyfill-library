@@ -14,9 +14,7 @@
 		"bb": "*",
 		"chrome": "1 - 45",
 		"firefox": "1 - 33",
-		"edge": "<13",
-		"edge_mob": "<13",
-		"ie": "*",
+		"ie": "<13",
 		"ie_mob": "*",
 		"ios_chr": "*",
 		"ios_saf": "<9",
@@ -28,9 +26,7 @@
 		"samsung_mob": "<5"
 	},
 	"dependencies": [
-		"_ESAbstract.CreateMethodProperty",
-		"_ESAbstract.Get",
-		"_ESAbstract.ToObject",
+		"Object.defineProperty",
 		"Object.getOwnPropertyDescriptor",
 		"Object.keys"
 	],

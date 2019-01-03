@@ -6,16 +6,12 @@
 	"browsers": {
 		"chrome": "<41",
 		"firefox": "<29",
-		"ie": "*",
+		"ie": "<12",
 		"opera": "<28",
 		"safari": "<10"
 	},
 	"dependencies": [
-		"_ESAbstract.CreateMethodProperty",
-		"_ESAbstract.RequireObjectCoercible",
-		"_ESAbstract.ToString",
-		"_ESAbstract.ToInteger",
-		"_ESAbstract.UTF16Decode"
+		"Object.defineProperty"
 	],
 	"license": "MIT",
 	"spec": "https://tc39.github.io/ecma262/#sec-string.prototype.codepointat",

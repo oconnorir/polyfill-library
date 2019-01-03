@@ -1,47 +1,60 @@
-/* global CreateMethodProperty, IsArray, SameValue, ToInteger, ToNumber, UTF16Encoding */
-
-// 21.1.2.2. String.fromCodePoint ( ...codePoints )
-CreateMethodProperty(String, 'fromCodePoint', function fromCodePoint(_) { // eslint-disable-line no-unused-vars
-	// Polyfill.io - List to store the characters whilst iterating over the code points.
-	var result = [];
-	// 1. Let codePoints be a List containing the arguments passed to this function.
-	var codePoints = arguments;
-	// 2. Let length be the number of elements in codePoints.
-	var length = arguments.length;
-	// 3. Let elements be a new empty List.
-	var elements = [];
-	// 4. Let nextIndex be 0.
-	var nextIndex = 0;
-	// 5. Repeat, while nextIndex < length
-	while (nextIndex < length) {
-		// Polyfill.io - We reset the elements List as we store the partial results in the result List.
-		var elements = [];
-		// a. Let next be codePoints[nextIndex].
-		var next = codePoints[nextIndex];
-		// b. Let nextCP be ? ToNumber(next).
-		var nextCP = ToNumber(next);
-		// c. If SameValue(nextCP, ToInteger(nextCP)) is false, throw a RangeError exception.
-		if (SameValue(nextCP, ToInteger(nextCP)) === false) {
-			throw new RangeError('Invalid code point ' + Object.prototype.toString.call(nextCP));
-		}
-		// d. If nextCP < 0 or nextCP > 0x10FFFF, throw a RangeError exception.
-		if (nextCP < 0 || nextCP > 0x10FFFF) {
-			throw new RangeError('Invalid code point ' + Object.prototype.toString.call(nextCP));
-		}
-		// e. Append the elements of the UTF16Encoding of nextCP to the end of elements.
-		// Polyfill.io - UTF16Encoding can return a single codepoint or a list of multiple codepoints.
-		var cp = UTF16Encoding(nextCP);
-		if (IsArray(cp)) {
-			elements = elements.concat(cp);
+/*! http://mths.be/fromcodepoint v0.2.1 by @mathias */
+	(function() {
+		var defineProperty = (function() {
+			// IE 8 only supports `Object.defineProperty` on DOM elements
+			try {
+				var object = {};
+				var $defineProperty = Object.defineProperty;
+				var result = $defineProperty(object, object, object) && $defineProperty;
+			} catch(error) {}
+			return result;
+		}());
+		var stringFromCharCode = String.fromCharCode;
+		var floor = Math.floor;
+		var fromCodePoint = function(_) {
+			var MAX_SIZE = 0x4000;
+			var codeUnits = [];
+			var highSurrogate;
+			var lowSurrogate;
+			var index = -1;
+			var length = arguments.length;
+			if (!length) {
+				return '';
+			}
+			var result = '';
+			while (++index < length) {
+				var codePoint = Number(arguments[index]);
+				if (
+					!isFinite(codePoint) || // `NaN`, `+Infinity`, or `-Infinity`
+					codePoint < 0 || // not a valid Unicode code point
+					codePoint > 0x10FFFF || // not a valid Unicode code point
+					floor(codePoint) != codePoint // not an integer
+				) {
+					throw RangeError('Invalid code point: ' + codePoint);
+				}
+				if (codePoint <= 0xFFFF) { // BMP code point
+					codeUnits.push(codePoint);
+				} else { // Astral code point; split in surrogate halves
+					// http://mathiasbynens.be/notes/javascript-encoding#surrogate-formulae
+					codePoint -= 0x10000;
+					highSurrogate = (codePoint >> 10) + 0xD800;
+					lowSurrogate = (codePoint % 0x400) + 0xDC00;
+					codeUnits.push(highSurrogate, lowSurrogate);
+				}
+				if (index + 1 == length || codeUnits.length > MAX_SIZE) {
+					result += stringFromCharCode.apply(null, codeUnits);
+					codeUnits.length = 0;
+				}
+			}
+			return result;
+		};
+		if (defineProperty) {
+			defineProperty(String, 'fromCodePoint', {
+				'value': fromCodePoint,
+				'configurable': true,
+				'writable': true
+			});
 		} else {
-			elements.push(cp);
+			String.fromCodePoint = fromCodePoint;
 		}
-		// f. Let nextIndex be nextIndex + 1.
-		nextIndex = nextIndex + 1;
-
-		// Polyfill.io - Retrieving the characters whilst iterating enables the function to work in a memory efficient and performant way.
-		result.push(String.fromCharCode.apply(null, elements));
-	}
-	// 6. Return the String value whose elements are, in order, the elements in the List elements. If length is 0, the empty string is returned.
-	return length === 0 ? '' : result.join('');
-});
+	}());

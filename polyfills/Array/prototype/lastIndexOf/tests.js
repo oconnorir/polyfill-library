@@ -1,21 +1,5 @@
-/* eslint-env mocha */
-/* globals proclaim */
-
-it('is a function', function () {
-	proclaim.isFunction(Array.prototype.lastIndexOf);
-});
-
-it('has correct arity', function () {
-	proclaim.arity(Array.prototype.lastIndexOf, 1);
-});
-
-it('has correct name', function () {
-	proclaim.hasName(Array.prototype.lastIndexOf, 'lastIndexOf');
-});
-
-it('is not enumerable', function () {
-	proclaim.isNotEnumerable(Array.prototype, 'lastIndexOf');
-});
+/* eslint-env mocha, browser */
+/* global proclaim */
 
 it('is a function', function() {
 	proclaim.isInstanceOf(Array.prototype.lastIndexOf, Function);

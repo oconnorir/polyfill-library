@@ -1,1 +1,1 @@
-console.groupEnd = function groupEnd() {};
+this.console.groupEnd = function groupEnd() {};

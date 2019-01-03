@@ -1,10 +1,8 @@
 {
 	"browsers": {
 		"chrome": "<26",
-		"edge": "*",
-		"edge_mob": "*",
 		"firefox": "<14",
-		"ie": "*",
+		"ie": "8 - 11",
 		"opera": "<15",
 		"safari": "<6",
 		"android": "<4.4",

@@ -1,25 +1,17 @@
 /* eslint-env mocha, browser */
 /* global proclaim */
 
-it('is a function', function () {
-	proclaim.isFunction(Array.prototype.filter);
-});
-
-it('has correct arity', function () {
-	proclaim.arity(Array.prototype.filter, 1);
-});
-
-it('has correct name', function () {
-	proclaim.hasName(Array.prototype.filter, 'filter');
-});
-
-it('is not enumerable', function () {
-	proclaim.isNotEnumerable(Array.prototype, 'filter');
-});
-
 var stringsOnly = function(val) {
 	return (typeof val === 'string');
 };
+
+it('is a function', function() {
+	proclaim.isInstanceOf(Array.prototype.filter, Function);
+});
+
+it('takes 1 argument', function() {
+	proclaim.equal(Array.prototype.filter.length, 1);
+});
 
 it('throws a TypeError when applied to non-array-like types', function() {
 	proclaim.throws(function() {

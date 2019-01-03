@@ -8,8 +8,6 @@
 		"android": "*",
 		"bb": "*",
 		"chrome": "1 - 29",
-		"edge": "*",
-		"edge_mob": "*",
 		"firefox": "3.6 - 21",
 		"ie": "*",
 		"ie_mob": "10 - *",
@@ -20,9 +18,5 @@
 		"ios_saf": "*",
 		"firefox_mob": "3.6 - 21"
 	},
-	"dependencies": [
-		"_ESAbstract.CreateMethodProperty",
-		"_ESAbstract.SameValue"
-	],
 	"docs": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/is"
 }

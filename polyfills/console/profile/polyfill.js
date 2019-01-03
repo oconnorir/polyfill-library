@@ -1,1 +1,1 @@
-console.profile = function profile() {};
+this.console.profile = function profile() {};

@@ -159,15 +159,5 @@ it('subclasses should be instances of Event if the UA implements DOM3', function
 		}
 	});
 	document.body.appendChild(a);
-	// Can not use a.click() as Safari 5.1 does not support the click method.
-	a.dispatchEvent(new Event('click', {
-		bubbles: true
-	}));
-});
-
-it('should have eventPhase constants', function () {
-	proclaim.equal(Event.NONE, 0);
-	proclaim.equal(Event.CAPTURING_PHASE, 1);
-	proclaim.equal(Event.AT_TARGET, 2);
-	proclaim.equal(Event.BUBBLING_PHASE, 3);
+	a.click();
 });

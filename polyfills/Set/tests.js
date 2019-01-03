@@ -1,21 +1,5 @@
 /* eslint-env mocha, browser */
-/* global proclaim, Set, Symbol */
-
-it('is a function', function () {
-	proclaim.isFunction(Set);
-});
-
-it('has correct arity', function () {
-	proclaim.arity(Set, 0);
-});
-
-it('has correct name', function () {
-	proclaim.hasName(Set, 'Set');
-});
-
-it('is not enumerable', function () {
-	proclaim.isNotEnumerable(window, 'Set');
-});
+/* global proclaim */
 
 describe('Set', function() {
 
@@ -135,7 +119,9 @@ describe('Set', function() {
 
 			it("implements iterable for all iterators", function () {
 				var o = new Set([1,2,3]);
-				var valuesIterator = o.values()[Symbol.iterator]();
+				var valuesIteratorFactory = o.values()[Symbol.iterator];
+				proclaim.isFunction(valuesIteratorFactory);
+				var valuesIterator = valuesIteratorFactory();
 				proclaim.isObject(valuesIterator);
 				var v = valuesIterator.next();
 				proclaim.equal(v.value, 1);
@@ -146,7 +132,9 @@ describe('Set', function() {
 				v = valuesIterator.next();
 				proclaim.equal(v.done, true);
 
-				var keysIterator = o.keys()[Symbol.iterator]();
+				var keysIteratorFactory = o.keys()[Symbol.iterator];
+				proclaim.isFunction(keysIteratorFactory);
+				var keysIterator = keysIteratorFactory();
 				proclaim.isObject(keysIterator);
 				var k = keysIterator.next();
 				proclaim.equal(k.value, 1);
@@ -157,7 +145,9 @@ describe('Set', function() {
 				k = keysIterator.next();
 				proclaim.equal(k.done, true);
 
-				var entriesIterator = o.entries()[Symbol.iterator]();
+				var entriesIteratorFactory = o.entries()[Symbol.iterator];
+				proclaim.isFunction(entriesIteratorFactory);
+				var entriesIterator = entriesIteratorFactory();
 				proclaim.isObject(entriesIterator);
 				var e = entriesIterator.next();
 				proclaim.deepEqual(e.value, [1,1]);

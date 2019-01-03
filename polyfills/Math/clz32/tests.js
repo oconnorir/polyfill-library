@@ -1,21 +1,5 @@
-/* eslint-env mocha */
-/* globals proclaim */
-
-it('is a function', function () {
-	proclaim.isFunction(Math.clz32);
-});
-
-it('has correct arity', function () {
-	proclaim.arity(Math.clz32, 1);
-});
-
-it('has correct name', function () {
-	proclaim.hasName(Math.clz32, 'clz32');
-});
-
-it('is not enumerable', function () {
-	proclaim.isNotEnumerable(Math, 'clz32');
-});
+/* eslint-env mocha, browser */
+/* global proclaim */
 
 var supportsGetOwnPropertyDescriptor = 'getOwnPropertyDescriptor' in Object && typeof Object.getOwnPropertyDescriptor === 'function' && (function() {
     try {
