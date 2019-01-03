@@ -332,7 +332,7 @@
         } catch (_) {
           return false;
         }
-      }());
+      })();
 
       var self = ES5_GET_SET ? this : document.createElement('a');
 
