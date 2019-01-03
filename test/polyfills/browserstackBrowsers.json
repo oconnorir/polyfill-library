@@ -153,14 +153,6 @@
     },
     {
         "os": "OS X",
-        "os_version": "Snow Leopard",
-        "browser": "safari",
-        "device": null,
-        "browser_version": "5.1",
-        "real_mobile": null
-    },
-    {
-        "os": "OS X",
         "os_version": "Lion",
         "browser": "safari",
         "device": null,
