@@ -20,14 +20,6 @@
         "os_version": "XP",
         "browser": "chrome",
         "device": null,
-        "browser_version": "14.0",
-        "real_mobile": null
-    },
-    {
-        "os": "Windows",
-        "os_version": "XP",
-        "browser": "chrome",
-        "device": null,
         "browser_version": "15.0",
         "real_mobile": null
     },
