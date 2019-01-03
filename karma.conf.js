@@ -39,11 +39,11 @@ function getBrowsersFor(feature) {
 				base: 'BrowserStack'
 			}, browserObj);
 		} else {
-			throw new Error(`Browser: ${browser} with version ${version} was not found on BrowserStack.`);
+			// throw new Error(`Browser: ${browser} with version ${version} was not found on BrowserStack.`);
 		}
 	}
 
-	const browsersWeSupportInBrowserStack = browsersWeSupportForThisFeature.map(useragentToBrowserObj).reduce(function (acc, cur) {
+	const browsersWeSupportInBrowserStack = browsersWeSupportForThisFeature.map(useragentToBrowserObj).filter(Boolean).reduce(function (acc, cur) {
 		acc[cur.name] = cur;
 		return acc;
 	}, {});
