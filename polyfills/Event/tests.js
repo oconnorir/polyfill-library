@@ -159,5 +159,7 @@ it('subclasses should be instances of Event if the UA implements DOM3', function
 		}
 	});
 	document.body.appendChild(a);
-	a.click();
+	if (typeof a.click === 'function') {
+		a.click();
+	}
 });
