@@ -48,16 +48,15 @@ jobs:
       - run: npm run test-polyfills -- --features=Promise --browserstack
       - run: npm run test-polyfills -- --features=Set --browserstack
       - run: npm run test-polyfills -- --features=Symbol --browserstack
-      - run: npm run test-polyfills -- --features=URL --browserstack
       - run: npm run test-polyfills -- --features=UserTiming --browserstack
       - run: npm run test-polyfills -- --features=WeakMap --browserstack
+      - run: npm run test-polyfills -- --features=WeakSet --browserstack
   test_1:
     docker:
       - image: circleci/node:10
     steps:
       - checkout
       - run: yarn install --frozen-lockfile
-      - run: npm run test-polyfills -- --features=WeakSet --browserstack
       - run: npm run test-polyfills -- --features=XMLHttpRequest --browserstack
       - run: npm run test-polyfills -- --features=_TypedArray --browserstack
       - run: npm run test-polyfills -- --features=atob --browserstack
@@ -71,14 +70,14 @@ jobs:
       - run: npm run test-polyfills -- --features=document.visibilityState
           --browserstack
       - run: npm run test-polyfills -- --features=matchMedia --browserstack
+      - run: npm run test-polyfills -- --features=requestAnimationFrame
+          --browserstack
   test_2:
     docker:
       - image: circleci/node:10
     steps:
       - checkout
       - run: yarn install --frozen-lockfile
-      - run: npm run test-polyfills -- --features=requestAnimationFrame
-          --browserstack
       - run: npm run test-polyfills -- --features=Array.from --browserstack
       - run: npm run test-polyfills -- --features=Array.isArray --browserstack
       - run: npm run test-polyfills -- --features=Array.of --browserstack
@@ -88,13 +87,13 @@ jobs:
       - run: npm run test-polyfills -- --features=Math.acosh --browserstack
       - run: npm run test-polyfills -- --features=Math.asinh --browserstack
       - run: npm run test-polyfills -- --features=Math.clz32 --browserstack
+      - run: npm run test-polyfills -- --features=Number.Epsilon --browserstack
   test_3:
     docker:
       - image: circleci/node:10
     steps:
       - checkout
       - run: yarn install --frozen-lockfile
-      - run: npm run test-polyfills -- --features=Number.Epsilon --browserstack
       - run: npm run test-polyfills -- --features=Number.MAX_SAFE_INTEGER
           --browserstack
       - run: npm run test-polyfills -- --features=Number.MIN_SAFE_INTEGER
@@ -107,13 +106,13 @@ jobs:
       - run: npm run test-polyfills -- --features=Number.parseFloat --browserstack
       - run: npm run test-polyfills -- --features=Number.parseInt --browserstack
       - run: npm run test-polyfills -- --features=Object.assign --browserstack
+      - run: npm run test-polyfills -- --features=Object.create --browserstack
   test_4:
     docker:
       - image: circleci/node:10
     steps:
       - checkout
       - run: yarn install --frozen-lockfile
-      - run: npm run test-polyfills -- --features=Object.create --browserstack
       - run: npm run test-polyfills -- --features=Object.defineProperty
           --browserstack
       - run: npm run test-polyfills -- --features=Object.entries --browserstack
@@ -127,14 +126,14 @@ jobs:
           --browserstack
       - run: npm run test-polyfills -- --features=Object.values --browserstack
       - run: npm run test-polyfills -- --features=Symbol.hasInstance --browserstack
+      - run: npm run test-polyfills -- --features=Symbol.isConcatSpreadable
+          --browserstack
   test_5:
     docker:
       - image: circleci/node:10
     steps:
       - checkout
       - run: yarn install --frozen-lockfile
-      - run: npm run test-polyfills -- --features=Symbol.isConcatSpreadable
-          --browserstack
       - run: npm run test-polyfills -- --features=Symbol.iterator --browserstack
       - run: npm run test-polyfills -- --features=Symbol.match --browserstack
       - run: npm run test-polyfills -- --features=Symbol.replace --browserstack
@@ -144,13 +143,13 @@ jobs:
       - run: npm run test-polyfills -- --features=Symbol.toPrimitive --browserstack
       - run: npm run test-polyfills -- --features=Symbol.toStringTag --browserstack
       - run: npm run test-polyfills -- --features=Symbol.unscopables --browserstack
+      - run: npm run test-polyfills -- --features=console.assert --browserstack
   test_6:
     docker:
       - image: circleci/node:10
     steps:
       - checkout
       - run: yarn install --frozen-lockfile
-      - run: npm run test-polyfills -- --features=console.assert --browserstack
       - run: npm run test-polyfills -- --features=console.clear --browserstack
       - run: npm run test-polyfills -- --features=console.count --browserstack
       - run: npm run test-polyfills -- --features=console.debug --browserstack
@@ -161,13 +160,13 @@ jobs:
       - run: npm run test-polyfills -- --features=console.group --browserstack
       - run: npm run test-polyfills -- --features=console.groupCollapsed
           --browserstack
+      - run: npm run test-polyfills -- --features=console.groupEnd --browserstack
   test_7:
     docker:
       - image: circleci/node:10
     steps:
       - checkout
       - run: yarn install --frozen-lockfile
-      - run: npm run test-polyfills -- --features=console.groupEnd --browserstack
       - run: npm run test-polyfills -- --features=console.info --browserstack
       - run: npm run test-polyfills -- --features=console.log --browserstack
       - run: npm run test-polyfills -- --features=console.markTimeline
@@ -178,13 +177,13 @@ jobs:
       - run: npm run test-polyfills -- --features=console.table --browserstack
       - run: npm run test-polyfills -- --features=console.time --browserstack
       - run: npm run test-polyfills -- --features=console.timeEnd --browserstack
+      - run: npm run test-polyfills -- --features=console.timeStamp --browserstack
   test_8:
     docker:
       - image: circleci/node:10
     steps:
       - checkout
       - run: yarn install --frozen-lockfile
-      - run: npm run test-polyfills -- --features=console.timeStamp --browserstack
       - run: npm run test-polyfills -- --features=console.timeline --browserstack
       - run: npm run test-polyfills -- --features=console.timelineEnd --browserstack
       - run: npm run test-polyfills -- --features=console.trace --browserstack
@@ -197,14 +196,14 @@ jobs:
           --browserstack
       - run: npm run test-polyfills -- --features=Array.prototype.copyWithin
           --browserstack
+      - run: npm run test-polyfills -- --features=Array.prototype.entries
+          --browserstack
   test_9:
     docker:
       - image: circleci/node:10
     steps:
       - checkout
       - run: yarn install --frozen-lockfile
-      - run: npm run test-polyfills -- --features=Array.prototype.entries
-          --browserstack
       - run: npm run test-polyfills -- --features=Array.prototype.every
           --browserstack
       - run: npm run test-polyfills -- --features=Array.prototype.fill
@@ -223,14 +222,14 @@ jobs:
           --browserstack
       - run: npm run test-polyfills -- --features=Array.prototype.keys
           --browserstack
+      - run: npm run test-polyfills -- --features=Array.prototype.lastIndexOf
+          --browserstack
   test_10:
     docker:
       - image: circleci/node:10
     steps:
       - checkout
       - run: yarn install --frozen-lockfile
-      - run: npm run test-polyfills -- --features=Array.prototype.lastIndexOf
-          --browserstack
       - run: npm run test-polyfills -- --features=Array.prototype.map --browserstack
       - run: npm run test-polyfills -- --features=Array.prototype.reduce
           --browserstack
@@ -248,14 +247,14 @@ jobs:
           --browserstack
       - run: npm run test-polyfills --
           --features=DocumentFragment.prototype.prepend --browserstack
+      - run: npm run test-polyfills -- --features=Element.prototype.after
+          --browserstack
   test_11:
     docker:
       - image: circleci/node:10
     steps:
       - checkout
       - run: yarn install --frozen-lockfile
-      - run: npm run test-polyfills -- --features=Element.prototype.after
-          --browserstack
       - run: npm run test-polyfills -- --features=Element.prototype.append
           --browserstack
       - run: npm run test-polyfills -- --features=Element.prototype.before
@@ -274,14 +273,14 @@ jobs:
           --browserstack
       - run: npm run test-polyfills -- --features=Element.prototype.remove
           --browserstack
+      - run: npm run test-polyfills -- --features=Element.prototype.replaceWith
+          --browserstack
   test_12:
     docker:
       - image: circleci/node:10
     steps:
       - checkout
       - run: yarn install --frozen-lockfile
-      - run: npm run test-polyfills -- --features=Element.prototype.replaceWith
-          --browserstack
       - run: npm run test-polyfills -- --features=Function.prototype.bind
           --browserstack
       - run: npm run test-polyfills --
@@ -300,14 +299,14 @@ jobs:
           --browserstack
       - run: npm run test-polyfills -- --features=String.prototype.endsWith
           --browserstack
+      - run: npm run test-polyfills -- --features=String.prototype.padEnd
+          --browserstack
   test_13:
     docker:
       - image: circleci/node:10
     steps:
       - checkout
       - run: yarn install --frozen-lockfile
-      - run: npm run test-polyfills -- --features=String.prototype.padEnd
-          --browserstack
       - run: npm run test-polyfills -- --features=String.prototype.padStart
           --browserstack
       - run: npm run test-polyfills -- --features=String.prototype.repeat
