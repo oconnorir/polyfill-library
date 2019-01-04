@@ -345,14 +345,6 @@
     },
     {
         "os": "android",
-        "os_version": "4.4",
-        "browser": "android",
-        "device": "Google Nexus 5",
-        "browser_version": null,
-        "real_mobile": true
-    },
-    {
-        "os": "android",
         "os_version": "7.0",
         "browser": "android",
         "device": "Samsung Galaxy Tab S3",
