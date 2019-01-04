@@ -4618,10 +4618,10 @@ void-elements@^2.0.0:
   resolved "https://registry.yarnpkg.com/void-elements/-/void-elements-2.0.1.tgz#c066afb582bb1cb4128d60ea92392e94d5e9dbec"
   integrity sha1-wGavtYK7HLQSjWDqkjkulNXp2+w=
 
-web-animations-js@^2.2.5:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/web-animations-js/-/web-animations-js-2.3.1.tgz#3a6d9bc15196377a90f8e2803fa5262165b04510"
-  integrity sha1-Om2bwVGWN3qQ+OKAP6UmIWWwRRA=
+web-animations-js@2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/web-animations-js/-/web-animations-js-2.2.5.tgz#26ca1b34c1347332a0813f8b2bfe69664efa80aa"
+  integrity sha1-JsobNME0czKggT+LK/5pZk76gKo=
 
 whatwg-fetch@2.0.3:
   version "2.0.3"
