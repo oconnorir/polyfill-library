@@ -1,5 +1,6 @@
 {
 	"aliases": [
+		"IntersectionObserverEntry"
 	],
 	"browsers": {
 		"android": "4.4 - *",
@@ -28,7 +29,7 @@
 		"Event",
 		"Function.prototype.bind",
 		"performance.now"
-		],
+	],
 	"docs": "https://github.com/w3c/IntersectionObserver/blob/master/explainer.md",
 	"spec": "http://rawgit.com/w3c/IntersectionObserver/master/index.html",
 	"notes": [],
