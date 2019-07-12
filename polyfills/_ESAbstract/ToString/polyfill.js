@@ -30,7 +30,7 @@ function ToString(argument) { // eslint-disable-line no-unused-vars
 			throw new TypeError('Cannot convert a Symbol value to a string');
 			break;
 		case 'object':
-			var primValue = ToPrimitive(argument, 'string');
+			var primValue = ToPrimitive(argument, String);
 			return ToString(primValue);
 		default:
 			return String(argument);
