@@ -7,6 +7,7 @@
 	],
 	"browsers": {
 		"ie": "*",
+		"edge": "<12",
 		"safari": "<9",
 		"firefox": "<36",
 		"chrome": "<45",
@@ -14,7 +15,7 @@
 		"firefox_mob": "<29",
 		"ie_mob": "*",
 		"opera": "<25",
-		"opera_mob": "*",
+		"op_mob": "*",
 		"op_mini": "*",
 		"ios_saf": "<9",
 		"bb": "10 - *"
