@@ -1009,6 +1009,16 @@ jobs:
           command: node ./test/polyfills/test-individual-feature.js
             String.prototype.trim
       - run:
+          name: Testing String.prototype.trimEnd
+          no_output_timeout: 180m
+          command: node ./test/polyfills/test-individual-feature.js
+            String.prototype.trimEnd
+      - run:
+          name: Testing String.prototype.trimStart
+          no_output_timeout: 180m
+          command: node ./test/polyfills/test-individual-feature.js
+            String.prototype.trimStart
+      - run:
           name: Testing Symbol.prototype.description
           no_output_timeout: 180m
           command: node ./test/polyfills/test-individual-feature.js
