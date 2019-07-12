@@ -133,7 +133,6 @@ function checkForAllES6Features(polyfills) {
 		'Symbol.toStringTag',
 		'Symbol.unscopables',
 		'RegExp.prototype.flags',
-		'RegExp.prototype.compile',
 		'Array.from',
 		'Array.of',
 		'Array.prototype.find',
