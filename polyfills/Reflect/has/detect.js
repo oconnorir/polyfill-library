@@ -1,1 +1,1 @@
-'has' in Reflect
+self.Reflect && 'has' in self.Reflect

@@ -1,12 +1,7 @@
 'getOwnPropertyDescriptor' in Object && typeof Object.getOwnPropertyDescriptor === 'function' && (function() {
-    try {
-    	var object = {};
-        object.test = 0;
-        return Object.getOwnPropertyDescriptor(
-            object,
-            "test"
-        ).value === 0;
-    } catch (exception) {
-        return false
-    }
+	try {
+		return Object.getOwnPropertyDescriptor('13.7', 1).value === '3';
+	} catch (exception) {
+		return false
+	}
 }())

@@ -1,40 +1,8 @@
 (function () {
-	var unlistenableWindowEvents = {
-		click: 1,
-		dblclick: 1,
-		keyup: 1,
-		keypress: 1,
-		keydown: 1,
-		mousedown: 1,
-		mouseup: 1,
-		mousemove: 1,
-		mouseover: 1,
-		mouseenter: 1,
-		mouseleave: 1,
-		mouseout: 1,
-		storage: 1,
-		storagecommit: 1,
-		textinput: 1
-	};
-
 	// This polyfill depends on availability of `document` so will not run in a worker
 	// However, we asssume there are no browsers with worker support that lack proper
 	// support for `Event` within the worker
 	if (typeof document === 'undefined' || typeof window === 'undefined') return;
-
-	function indexOf(array, element) {
-		var
-		index = -1,
-		length = array.length;
-
-		while (++index < length) {
-			if (index in array && array[index] === element) {
-				return index;
-			}
-		}
-
-		return -1;
-	}
 
 	var existingProto = (window.Event && window.Event.prototype) || null;
 	function Event(type, eventInitDict) {
@@ -61,7 +29,7 @@
 		event.cancelable = eventInitDict && eventInitDict.cancelable !== undefined ? eventInitDict.cancelable : false;
 
 		return event;
-	};
+	}
 	Event.NONE = 0;
 	Event.CAPTURING_PHASE = 1;
 	Event.AT_TARGET = 2;
@@ -82,10 +50,6 @@
 			element = this,
 			type = arguments[0],
 			listener = arguments[1];
-
-			if (element === window && type in unlistenableWindowEvents) {
-				throw new Error('In IE8 the event: ' + type + ' is not available on the window object. Please see https://github.com/Financial-Times/polyfill-service/issues/317 for more information.');
-			}
 
 			if (!element._events) {
 				element._events = {};
@@ -129,7 +93,7 @@
 						if (index in events) {
 							eventElement = events[index];
 
-							if (indexOf(list, eventElement) !== -1 && typeof eventElement === 'function') {
+							if (list.includes(eventElement) && typeof eventElement === 'function') {
 								eventElement.call(element, event);
 							}
 						}
@@ -154,7 +118,7 @@
 			index;
 
 			if (element._events && element._events[type] && element._events[type].list) {
-				index = indexOf(element._events[type].list, listener);
+				index = element._events[type].list.indexOf(listener);
 
 				if (index !== -1) {
 					element._events[type].list.splice(index, 1);

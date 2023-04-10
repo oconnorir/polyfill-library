@@ -10,9 +10,8 @@
  *   See https://github.com/eligrey/Blob.js/blob/master/LICENSE.md
  */
 
-/*global self, unescape */
 /*jslint bitwise: true, regexp: true, confusion: true, es5: true, vars: true, white: true,
-  plusplus: true */
+	plusplus: true */
 
 /*! @source http://purl.eligrey.com/github/Blob.js/blob/master/Blob.js */
 
@@ -56,13 +55,13 @@
 		var URL = real_URL;
 		var btoa = view.btoa;
 		var atob = view.atob;
-		var origin = /^[\w-]+:\/*\[?[\w\.:-]+\]?(?::[0-9]+)?/;
+		var origin = /^[\w-]+:\/*\[?[\w.:-]+\]?(?::[0-9]+)?/;
 		FakeBlob.fake = FB_proto.fake = true;
 		while (file_ex_code--) {
 			FileException.prototype[file_ex_codes[file_ex_code]] = file_ex_code + 1;
 		}
 		// Polyfill URL
-		if (!real_URL.createObjectURL) {
+		if (!view.URL) {
 			URL = view.URL = function (uri) {
 				var
 					uri_info = document.createElementNS("http://www.w3.org/1999/xhtml", "a"),
@@ -79,6 +78,7 @@
 				return uri_info;
 			};
 		}
+
 		URL.createObjectURL = function (blob) {
 			var
 				type = blob.type,
@@ -201,11 +201,7 @@
 		var blobParts = arguments[0];
 		var options = arguments[1];
 
-		try {
-			var isInstanceOfBlob = this instanceof Blob;
-		} catch (e) {
-			// Polyfill.io - IE 8 throws an error when using instanceof
-		}
+		var isInstanceOfBlob = this instanceof Blob;
 		if (isInstanceOfBlob === false) {
 			throw new TypeError("Failed to construct 'Blob': Please use the 'new' operator, this DOM object constructor cannot be called as a function.");
 		}
@@ -243,4 +239,4 @@
 		return object.__proto__;
 	};
 	view.Blob.prototype = getPrototypeOf(new view.Blob());
-}(typeof self !== "undefined" && self || typeof window !== "undefined" && window || this));
+}(self));

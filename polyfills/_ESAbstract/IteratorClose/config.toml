@@ -1,7 +1,7 @@
 dependencies = [
-  "_ESAbstract.Call",
-  "_ESAbstract.GetMethod",
-  "_ESAbstract.Type"
+	"_ESAbstract.Call",
+	"_ESAbstract.GetMethod",
+	"_ESAbstract.Type"
 ]
 spec = "https://tc39.github.io/ecma262/#sec-iteratorclose"
 
@@ -15,11 +15,9 @@ firefox = "*"
 firefox_mob = "*"
 ie = "*"
 ie_mob = "*"
-ios_chr = "*"
-ios_saf = "*"
-op_mini = "*"
-op_mob = "*"
 opera = "*"
+op_mob = "*"
+op_mini = "*"
 safari = "*"
+ios_saf = "*"
 samsung_mob = "*"
-

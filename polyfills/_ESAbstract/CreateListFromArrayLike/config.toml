@@ -1,9 +1,9 @@
 dependencies = [
-  "_ESAbstract.Type",
-  "_ESAbstract.ToLength",
-  "_ESAbstract.Get",
-  "_ESAbstract.ToString",
-  "Array.prototype.includes"
+	"_ESAbstract.Type",
+	"_ESAbstract.ToLength",
+	"_ESAbstract.Get",
+	"_ESAbstract.ToString",
+	"Array.prototype.includes"
 ]
 spec = "https://tc39.github.io/ecma262/#sec-createlistfromarraylike"
 
@@ -14,14 +14,12 @@ chrome = "*"
 edge = "*"
 edge_mob = "*"
 firefox = "*"
-ios_chr = "*"
-ios_saf = "*"
+firefox_mob = "*"
 ie = "*"
 ie_mob = "*"
 opera = "*"
-op_mini = "*"
 op_mob = "*"
+op_mini = "*"
 safari = "*"
-firefox_mob = "*"
+ios_saf = "*"
 samsung_mob = "*"
-

@@ -1,1 +1,1 @@
-'getOwnPropertyDescriptor' in Reflect
+self.Reflect && 'getOwnPropertyDescriptor' in self.Reflect

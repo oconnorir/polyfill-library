@@ -1,1 +1,1 @@
-'ownKeys' in Reflect
+self.Reflect && 'ownKeys' in self.Reflect

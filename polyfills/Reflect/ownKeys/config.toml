@@ -1,27 +1,23 @@
 dependencies = [
-  "Reflect",
-  "Symbol",
-  "Object.getOwnPropertyNames",
-  "_ESAbstract.Type",
-  "_ESAbstract.CreateMethodProperty"
+	"Reflect",
+	"Symbol",
+	"Object.getOwnPropertyNames",
+	"_ESAbstract.Type",
+	"_ESAbstract.CreateMethodProperty"
 ]
 spec = "https://tc39.github.io/ecma262/#sec-reflect.ownkeys"
 
 [browsers]
-android = "*"
+android = "<5"
 bb = "*"
-chrome = "*"
-edge = "*"
-edge_mob = "*"
-firefox = "*"
-firefox_mob = "*"
+chrome = "<49"
+firefox = "<42"
+firefox_mob = "<42"
 ie = "*"
 ie_mob = "*"
-ios_chr = "*"
-ios_saf = "*"
+opera = "<36"
+op_mob = "<36"
 op_mini = "*"
-op_mob = "*"
-opera = "*"
-safari = "*"
-samsung_mob = "*"
-
+safari = "<10.0"
+ios_saf = "<10.0"
+samsung_mob = "<5.0"

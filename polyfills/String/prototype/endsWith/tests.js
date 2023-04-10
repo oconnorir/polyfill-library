@@ -1,4 +1,4 @@
-/* eslint-env mocha */
+
 /* globals proclaim, Symbol */
 
 it('is a function', function () {
@@ -70,4 +70,3 @@ it('works as expected', function () {
 		}, TypeError);
 	}
 });
-

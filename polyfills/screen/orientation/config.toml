@@ -1,22 +1,20 @@
-dependencies = [ "Object.defineProperty" ]
-notes = [
-  "In IE <= 8 window.screen is read-only, so the orientation property is not definable"
-]
+dependencies = [ ]
+notes = [ ]
 spec = "http://www.w3.org/TR/screen-orientation/"
 docs = "https://developer.mozilla.org/en-US/docs/Web/API/Screen/orientation"
 
 [browsers]
+android = "<5"
+bb = "*"
+chrome = "<49"
 edge = "*"
 edge_mob = "*"
-ie = "9 - *"
+firefox = "<30"
+firefox_mob = "<30"
+ie = ">=9"
 ie_mob = "*"
-firefox = "*"
-chrome = "* - 37"
+opera = "<25"
+op_mob = "<36"
 safari = "*"
 ios_saf = "*"
-opera = "* - 24"
-op_mob = "*"
-android = "*"
-bb = "*"
-firefox_mob = "*"
-
+samsung_mob = "<5.0"

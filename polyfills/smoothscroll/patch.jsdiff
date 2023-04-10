@@ -1,19 +1,14 @@
 ===================================================================
---- a/polyfills/smoothscroll/polyfill.js
-+++ b/polyfills/smoothscroll/polyfill.js
-@@ -421,13 +421,8 @@
-       }
-     };
-   }
+--- a/polyfills/smoothscroll/polyfill-original.js
++++ b/polyfills/smoothscroll/polyfill-original.js
+@@ -1,7 +1,7 @@
+ (function (global, factory) {
+-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+-    typeof define === 'function' && define.amd ? define(['exports'], factory) :
+-    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.seamless = {}));
++    var exports = {};
++    factory(exports);
++    exports.polyfill();
+ }(this, (function (exports) { 'use strict';
  
--  if (typeof exports === 'object' && typeof module !== 'undefined') {
--    // commonjs
--    module.exports = { polyfill: polyfill };
--  } else {
--    // global
--    polyfill();
--  }
-+  // global
-+  polyfill();
- 
- }());
+     var ease = function (k) {

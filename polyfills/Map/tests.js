@@ -1,4 +1,4 @@
-/* eslint-env mocha */
+
 /* globals proclaim, Map, Symbol */
 
 it('is a function', function () {
@@ -17,223 +17,213 @@ it('is not enumerable', function () {
 	proclaim.isNotEnumerable(window, 'Map');
 });
 
-var arePropertyDescriptorsSupported = function() {
-	var obj = {};
-	try {
-		Object.defineProperty(obj, 'x', {
-			enumerable: false,
-			value: obj
-		});
-		/* eslint-disable no-unused-vars, no-restricted-syntax */
-		for (var _ in obj) {
-			return false;
-		}
-		/* eslint-enable no-unused-vars, no-restricted-syntax */
-		return obj.x === obj;
-	} catch (e) { // this is IE 8.
-		return false;
-	}
-};
-
-var supportsDescriptors = Object.defineProperty && arePropertyDescriptorsSupported();
-
 describe('Map', function () {
-
-	if (supportsDescriptors) {
-		it('has no enumerable properties on the prototype', function () {
-			for (var _ in Map.prototype) {
-				proclaim.isTrue(false, 'Expected no enumerable properties, found ' + _ + ' was enumerable');
-			}
-		});
-
-		it('has no enumerable properties on the instance', function () {
-			var o = new Map();
-			for (var _ in o) {
-				proclaim.isTrue(false, 'Expected no enumerable properties, found ' + _ + ' was enumerable');
-			}
-		});
-
-		var hasGetOwnPropertyDescriptor = 'getOwnPropertyDescriptor' in Object && typeof Object.getOwnPropertyDescriptor === 'function';
-		if (hasGetOwnPropertyDescriptor) {
-			it('has correct descriptors defined for Map', function () {
-				var descriptor = Object.getOwnPropertyDescriptor(window, 'Map');
-
-				proclaim.isTrue(descriptor.configurable);
-				try {
-					proclaim.isFalse(descriptor.enumerable);
-				} catch (e) {
-					// Safari 5.1 sets the property to true.
-					proclaim.isTrue(descriptor.enumerable);
-				}
-				proclaim.isTrue(descriptor.writable);
-				proclaim.doesNotInclude(descriptor, 'get');
-				proclaim.doesNotInclude(descriptor, 'set');
-				proclaim.isFunction(descriptor.value);
-			});
-			it('has correct descriptors defined for Map.name', function () {
-				var descriptor = Object.getOwnPropertyDescriptor(Map, 'name');
-
-				try {
-					proclaim.isTrue(descriptor.configurable);
-				} catch (e) {
-					// Safari 8 sets the name property with correct value but also to be non-configurable
-					proclaim.isFalse(descriptor.configurable);
-				}
-				proclaim.isFalse(descriptor.enumerable);
-				proclaim.isFalse(descriptor.writable);
-				proclaim.doesNotInclude(descriptor, 'get');
-				proclaim.doesNotInclude(descriptor, 'set');
-				proclaim.equal(descriptor.value, 'Map');
-			});
-			it('has correct descriptors defined for Map.prototype', function () {
-				var descriptor = Object.getOwnPropertyDescriptor(Map, 'prototype');
-
-				proclaim.isFalse(descriptor.configurable);
-				proclaim.isFalse(descriptor.enumerable);
-				try {
-					proclaim.isFalse(descriptor.writable);
-				} catch (e) {
-					// Safari 5.1 sets the property to true.
-					proclaim.isTrue(descriptor.writable);
-				}
-				proclaim.doesNotInclude(descriptor, 'get');
-				proclaim.doesNotInclude(descriptor, 'set');
-				proclaim.ok(descriptor.value);
-			});
-			it('has correct descriptors defined for Map.prototype.size', function () {
-				var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'size');
-
-				proclaim.isTrue(descriptor.configurable);
-				proclaim.isFalse(descriptor.enumerable);
-				proclaim.doesNotInclude(descriptor.writable);
-				proclaim.ok(descriptor.get);
-				proclaim.isUndefined(descriptor.set);
-				proclaim.include(descriptor, 'set');
-				proclaim.doesNotInclude(descriptor, 'value');
-			});
-			it('has correct descriptors defined for Map.prototype.get', function () {
-				var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'get');
-
-				proclaim.isTrue(descriptor.configurable);
-				proclaim.isFalse(descriptor.enumerable);
-				proclaim.isTrue(descriptor.writable);
-				proclaim.doesNotInclude(descriptor, 'get');
-				proclaim.doesNotInclude(descriptor, 'set');
-				proclaim.ok(descriptor.value);
-			});
-			it('has correct descriptors defined for Map.prototype.set', function () {
-				var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'set');
-
-				proclaim.isTrue(descriptor.configurable);
-				proclaim.isFalse(descriptor.enumerable);
-				proclaim.isTrue(descriptor.writable);
-				proclaim.doesNotInclude(descriptor, 'get');
-				proclaim.doesNotInclude(descriptor, 'set');
-				proclaim.ok(descriptor.value);
-			});
-			it('has correct descriptors defined for Map.prototype.has', function () {
-				var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'has');
-
-				proclaim.isTrue(descriptor.configurable);
-				proclaim.isFalse(descriptor.enumerable);
-				proclaim.isTrue(descriptor.writable);
-				proclaim.doesNotInclude(descriptor, 'get');
-				proclaim.doesNotInclude(descriptor, 'set');
-				proclaim.ok(descriptor.value);
-			});
-			it('has correct descriptors defined for Map.prototype.delete', function () {
-				var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'delete');
-
-				proclaim.isTrue(descriptor.configurable);
-				proclaim.isFalse(descriptor.enumerable);
-				proclaim.isTrue(descriptor.writable);
-				proclaim.doesNotInclude(descriptor, 'get');
-				proclaim.doesNotInclude(descriptor, 'set');
-				proclaim.ok(descriptor.value);
-			});
-			it('has correct descriptors defined for Map.prototype.clear', function () {
-				var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'clear');
-
-				proclaim.isTrue(descriptor.configurable);
-				proclaim.isFalse(descriptor.enumerable);
-				proclaim.isTrue(descriptor.writable);
-				proclaim.doesNotInclude(descriptor, 'get');
-				proclaim.doesNotInclude(descriptor, 'set');
-				proclaim.ok(descriptor.value);
-			});
-			it('has correct descriptors defined for Map.prototype.values', function () {
-				var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'values');
-
-				proclaim.isTrue(descriptor.configurable);
-				proclaim.isFalse(descriptor.enumerable);
-				proclaim.isTrue(descriptor.writable);
-				proclaim.doesNotInclude(descriptor, 'get');
-				proclaim.doesNotInclude(descriptor, 'set');
-				proclaim.ok(descriptor.value);
-			});
-			it('has correct descriptors defined for Map.prototype.keys', function () {
-				var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'keys');
-
-				proclaim.isTrue(descriptor.configurable);
-				proclaim.isFalse(descriptor.enumerable);
-				proclaim.isTrue(descriptor.writable);
-				proclaim.doesNotInclude(descriptor, 'get');
-				proclaim.doesNotInclude(descriptor, 'set');
-				proclaim.ok(descriptor.value);
-			});
-			it('has correct descriptors defined for Map.prototype[Symbol.iterator]', function () {
-				var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, Symbol.iterator);
-
-				proclaim.isTrue(descriptor.configurable);
-				proclaim.isFalse(descriptor.enumerable);
-				proclaim.isTrue(descriptor.writable);
-				proclaim.doesNotInclude(descriptor, 'get');
-				proclaim.doesNotInclude(descriptor, 'set');
-				proclaim.ok(descriptor.value);
-			});
-			it('has correct descriptors defined for Map.prototype.entries', function () {
-				var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'entries');
-
-				proclaim.isTrue(descriptor.configurable);
-				proclaim.isFalse(descriptor.enumerable);
-				proclaim.isTrue(descriptor.writable);
-				proclaim.doesNotInclude(descriptor, 'get');
-				proclaim.doesNotInclude(descriptor, 'set');
-				proclaim.ok(descriptor.value);
-			});
-			it('has correct descriptors defined for Map.prototype.forEach', function () {
-				var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'forEach');
-
-				proclaim.isTrue(descriptor.configurable);
-				proclaim.isFalse(descriptor.enumerable);
-				proclaim.isTrue(descriptor.writable);
-				proclaim.doesNotInclude(descriptor, 'get');
-				proclaim.doesNotInclude(descriptor, 'set');
-				proclaim.ok(descriptor.value);
-			});
-			it('has correct descriptors defined for Map.prototype.constructor', function () {
-				var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'constructor');
-
-				proclaim.isTrue(descriptor.configurable);
-				proclaim.isFalse(descriptor.enumerable);
-				proclaim.isTrue(descriptor.writable);
-				proclaim.doesNotInclude(descriptor, 'get');
-				proclaim.doesNotInclude(descriptor, 'set');
-				proclaim.ok(descriptor.value);
-			});
-			it('has correct descriptors defined for Map[Symbol.species]', function () {
-				var descriptor = Object.getOwnPropertyDescriptor(Map, Symbol.species);
-
-				proclaim.isTrue(descriptor.configurable);
-				proclaim.isFalse(descriptor.enumerable);
-				proclaim.doesNotInclude(descriptor, 'writable');
-				proclaim.include(descriptor, 'get');
-				proclaim.include(descriptor, 'set');
-				proclaim.isUndefined(descriptor.set);
-				proclaim.doesNotInclude(descriptor, 'value');
-			});
+	it('has no enumerable properties on the prototype', function () {
+		for (var _ in Map.prototype) {
+			proclaim.isTrue(false, 'Expected no enumerable properties, found ' + _ + ' was enumerable');
 		}
-	}
+	});
+
+	it('has no enumerable properties on the instance', function () {
+		var o = new Map();
+		for (var _ in o) {
+			proclaim.isTrue(false, 'Expected no enumerable properties, found ' + _ + ' was enumerable');
+		}
+	});
+
+	it('has correct descriptors defined for Map', function () {
+		var descriptor = Object.getOwnPropertyDescriptor(window, 'Map');
+
+		proclaim.isTrue(descriptor.configurable);
+		try {
+			proclaim.isFalse(descriptor.enumerable);
+		} catch (e) {
+			// Safari 5.1 sets the property to true.
+			proclaim.isTrue(descriptor.enumerable);
+		}
+		proclaim.isTrue(descriptor.writable);
+		proclaim.doesNotInclude(descriptor, 'get');
+		proclaim.doesNotInclude(descriptor, 'set');
+		proclaim.isFunction(descriptor.value);
+	});
+	it('has correct descriptors defined for Map.name', function () {
+		var descriptor = Object.getOwnPropertyDescriptor(Map, 'name');
+
+		try {
+			proclaim.isTrue(descriptor.configurable);
+		} catch (e) {
+			// Safari 8 sets the name property with correct value but also to be non-configurable
+			proclaim.isFalse(descriptor.configurable);
+		}
+		proclaim.isFalse(descriptor.enumerable);
+		proclaim.isFalse(descriptor.writable);
+		proclaim.doesNotInclude(descriptor, 'get');
+		proclaim.doesNotInclude(descriptor, 'set');
+		proclaim.equal(descriptor.value, 'Map');
+	});
+	it('has correct descriptors defined for Map.prototype', function () {
+		var descriptor = Object.getOwnPropertyDescriptor(Map, 'prototype');
+
+		proclaim.isFalse(descriptor.configurable);
+		proclaim.isFalse(descriptor.enumerable);
+		try {
+			proclaim.isFalse(descriptor.writable);
+		} catch (e) {
+			// Safari 5.1 sets the property to true.
+			proclaim.isTrue(descriptor.writable);
+		}
+		proclaim.doesNotInclude(descriptor, 'get');
+		proclaim.doesNotInclude(descriptor, 'set');
+		proclaim.ok(descriptor.value);
+	});
+	it('has correct descriptors defined for Map.prototype.size', function () {
+		var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'size');
+
+		proclaim.isTrue(descriptor.configurable);
+		proclaim.isFalse(descriptor.enumerable);
+		proclaim.doesNotInclude(descriptor.writable);
+		proclaim.ok(descriptor.get);
+		proclaim.isUndefined(descriptor.set);
+		proclaim.include(descriptor, 'set');
+		proclaim.doesNotInclude(descriptor, 'value');
+	});
+	it('has correct descriptors defined for Map.prototype.get', function () {
+		var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'get');
+
+		proclaim.isTrue(descriptor.configurable);
+		proclaim.isFalse(descriptor.enumerable);
+		proclaim.isTrue(descriptor.writable);
+		proclaim.doesNotInclude(descriptor, 'get');
+		proclaim.doesNotInclude(descriptor, 'set');
+		proclaim.ok(descriptor.value);
+	});
+	it('has correct descriptors defined for Map.prototype.set', function () {
+		var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'set');
+
+		proclaim.isTrue(descriptor.configurable);
+		proclaim.isFalse(descriptor.enumerable);
+		proclaim.isTrue(descriptor.writable);
+		proclaim.doesNotInclude(descriptor, 'get');
+		proclaim.doesNotInclude(descriptor, 'set');
+		proclaim.ok(descriptor.value);
+	});
+	it('has correct descriptors defined for Map.prototype.has', function () {
+		var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'has');
+
+		proclaim.isTrue(descriptor.configurable);
+		proclaim.isFalse(descriptor.enumerable);
+		proclaim.isTrue(descriptor.writable);
+		proclaim.doesNotInclude(descriptor, 'get');
+		proclaim.doesNotInclude(descriptor, 'set');
+		proclaim.ok(descriptor.value);
+	});
+	it('has correct descriptors defined for Map.prototype.delete', function () {
+		var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'delete');
+
+		proclaim.isTrue(descriptor.configurable);
+		proclaim.isFalse(descriptor.enumerable);
+		proclaim.isTrue(descriptor.writable);
+		proclaim.doesNotInclude(descriptor, 'get');
+		proclaim.doesNotInclude(descriptor, 'set');
+		proclaim.ok(descriptor.value);
+	});
+	it('has correct descriptors defined for Map.prototype.clear', function () {
+		var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'clear');
+
+		proclaim.isTrue(descriptor.configurable);
+		proclaim.isFalse(descriptor.enumerable);
+		proclaim.isTrue(descriptor.writable);
+		proclaim.doesNotInclude(descriptor, 'get');
+		proclaim.doesNotInclude(descriptor, 'set');
+		proclaim.ok(descriptor.value);
+	});
+	it('has correct descriptors defined for Map.prototype.values', function () {
+		var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'values');
+
+		proclaim.isTrue(descriptor.configurable);
+		proclaim.isFalse(descriptor.enumerable);
+		proclaim.isTrue(descriptor.writable);
+		proclaim.doesNotInclude(descriptor, 'get');
+		proclaim.doesNotInclude(descriptor, 'set');
+		proclaim.ok(descriptor.value);
+	});
+	it('has correct descriptors defined for Map.prototype.keys', function () {
+		var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'keys');
+
+		proclaim.isTrue(descriptor.configurable);
+		proclaim.isFalse(descriptor.enumerable);
+		proclaim.isTrue(descriptor.writable);
+		proclaim.doesNotInclude(descriptor, 'get');
+		proclaim.doesNotInclude(descriptor, 'set');
+		proclaim.ok(descriptor.value);
+	});
+	it('has correct descriptors defined for Map.prototype[Symbol.iterator]', function () {
+		var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, Symbol.iterator);
+
+		proclaim.isTrue(descriptor.configurable);
+		proclaim.isFalse(descriptor.enumerable);
+		proclaim.isTrue(descriptor.writable);
+		proclaim.doesNotInclude(descriptor, 'get');
+		proclaim.doesNotInclude(descriptor, 'set');
+		proclaim.ok(descriptor.value);
+	});
+	it('has correct descriptors defined for Map.prototype.entries', function () {
+		var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'entries');
+
+		proclaim.isTrue(descriptor.configurable);
+		proclaim.isFalse(descriptor.enumerable);
+		proclaim.isTrue(descriptor.writable);
+		proclaim.doesNotInclude(descriptor, 'get');
+		proclaim.doesNotInclude(descriptor, 'set');
+		proclaim.ok(descriptor.value);
+	});
+	it('has correct descriptors defined for Map.prototype.forEach', function () {
+		var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'forEach');
+
+		proclaim.isTrue(descriptor.configurable);
+		proclaim.isFalse(descriptor.enumerable);
+		proclaim.isTrue(descriptor.writable);
+		proclaim.doesNotInclude(descriptor, 'get');
+		proclaim.doesNotInclude(descriptor, 'set');
+		proclaim.ok(descriptor.value);
+	});
+	it('has correct descriptors defined for Map.prototype.constructor', function () {
+		var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, 'constructor');
+
+		proclaim.isTrue(descriptor.configurable);
+		proclaim.isFalse(descriptor.enumerable);
+		proclaim.isTrue(descriptor.writable);
+		proclaim.doesNotInclude(descriptor, 'get');
+		proclaim.doesNotInclude(descriptor, 'set');
+		proclaim.ok(descriptor.value);
+	});
+	it('has correct descriptors defined for Map[Symbol.species]', function () {
+		var descriptor = Object.getOwnPropertyDescriptor(Map, Symbol.species);
+
+		proclaim.isTrue(descriptor.configurable);
+		proclaim.isFalse(descriptor.enumerable);
+		proclaim.doesNotInclude(descriptor, 'writable');
+		proclaim.include(descriptor, 'get');
+		proclaim.include(descriptor, 'set');
+		proclaim.isUndefined(descriptor.set);
+		proclaim.doesNotInclude(descriptor, 'value');
+	});
+	it('has correct descriptors defined for Map.prototype[Symbol.toStringTag]', function () {
+		var descriptor = Object.getOwnPropertyDescriptor(Map.prototype, Symbol.toStringTag);
+
+		proclaim.isTrue(descriptor.configurable);
+		proclaim.isFalse(descriptor.enumerable);
+		proclaim.isFalse(descriptor.writable);
+		proclaim.equal(descriptor.value, 'Map');
+	});
+	it('has correct descriptors defined for Map[Symbol.iterator][Symbol.toStringTag]', function () {
+		var descriptor = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(new Map()[Symbol.iterator]()), Symbol.toStringTag);
+
+		proclaim.isTrue(descriptor.configurable);
+		proclaim.isFalse(descriptor.enumerable);
+		proclaim.isFalse(descriptor.writable);
+		proclaim.equal(descriptor.value, 'Map Iterator');
+	});
 
 	describe('constructor', function () {
 		it('has 0 length', function () {
@@ -252,7 +242,7 @@ describe('Map', function () {
 			proclaim.equal((new Map()).constructor, Map);
 			proclaim.equal((new Map()).constructor.name, "Map");
 			if ("__proto__" in {}) {
-				proclaim.equal((new Map).__proto__.isPrototypeOf(new Map()), true);
+				proclaim.equal(Object.prototype.isPrototypeOf.call((new Map).__proto__, new Map()), true);
 				proclaim.equal((new Map).__proto__ === Map.prototype, true);
 			}
 		});
@@ -363,48 +353,48 @@ describe('Map', function () {
 
 	describe('Map.prototype.delete', function () {
 		it('has 1 length', function () {
-			proclaim.equal(Map.prototype['delete'].length, 1);
+			proclaim.equal(Map.prototype.delete.length, 1);
 		});
 
 		it('throws a TypeError if `this` is not an Object', function () {
 			proclaim.throws(function () {
-				Map.prototype['delete'].call('');
+				Map.prototype.delete.call('');
 			}, TypeError);
 			proclaim.throws(function () {
-				Map.prototype['delete'].call(1);
+				Map.prototype.delete.call(1);
 			}, TypeError);
 			proclaim.throws(function () {
-				Map.prototype['delete'].call(true);
+				Map.prototype.delete.call(true);
 			}, TypeError);
 			proclaim.throws(function () {
-				Map.prototype['delete'].call(/ /);
+				Map.prototype.delete.call(/ /);
 			}, TypeError);
 			proclaim.throws(function () {
-				Map.prototype['delete'].call(null);
+				Map.prototype.delete.call(null);
 			}, TypeError);
 			proclaim.throws(function () {
-				Map.prototype['delete'].call(undefined);
+				Map.prototype.delete.call(undefined);
 			}, TypeError);
 		});
 
 		it('throws a TypeError if `this` is not an a Map Object', function () {
 			proclaim.throws(function () {
-				Map.prototype['delete'].call([]);
+				Map.prototype.delete.call([]);
 			}, TypeError);
 			proclaim.throws(function () {
-				Map.prototype['delete'].call({});
+				Map.prototype.delete.call({});
 			}, TypeError);
 		});
 
 		it('returns false if key was not in map', function () {
 			var map = new Map();
-			proclaim.isFalse(map['delete']('k'));
+			proclaim.isFalse(map.delete('k'));
 		});
 
 		it('returns true if key was in map', function () {
 			var map = new Map();
 			map.set('k', 1);
-			proclaim.isTrue(map['delete']('k'));
+			proclaim.isTrue(map.delete('k'));
 		});
 	});
 
@@ -413,7 +403,7 @@ describe('Map', function () {
 		proclaim.equal(o.size, 0);
 		o.set("a", "a");
 		proclaim.equal(o.size, 1);
-		o["delete"]("a"); // Use square-bracket syntax to avoid a reserved word in old browsers
+		o.delete("a");
 		proclaim.equal(o.size, 0);
 	});
 
@@ -438,6 +428,10 @@ describe('Map', function () {
 	it("implements .set()", function () {
 		var o = new Map();
 		var generic = {};
+		var frozenObject = {};
+		if (Object.freeze) {
+			Object.freeze(frozenObject);
+		}
 		var callback = function () {};
 		o.set(callback, generic);
 		proclaim.equal(o.get(callback), generic);
@@ -467,10 +461,35 @@ describe('Map', function () {
 		proclaim.equal(o.get(-0), generic);
 		proclaim.equal(o.get(0), generic);
 		if ('create' in Object) {
-			var o = new Map();
+			o = new Map();
 			var key = Object.create(null);
 			o.set(key, key);
 			proclaim.equal(o.get(key), key);
+		}
+		// test frozen object key
+		o.set(frozenObject, 'frozen solid');
+		proclaim.ok(o.has(frozenObject));
+		proclaim.equal(o.get(frozenObject), 'frozen solid');
+
+		o.set("", "test value");
+		proclaim.equal(o.get(""), 'test value');
+
+		if (Object.create && Object.setPrototypeOf) {
+			function BaseClass() { // eslint-disable-line no-inner-declarations
+				// Empty class
+			}
+			function SubClass() { // eslint-disable-line no-inner-declarations
+				// Empty class
+			}
+
+			SubClass.prototype = Object.create(BaseClass.prototype);
+			SubClass.prototype.constructor = SubClass;
+			Object.setPrototypeOf(SubClass, BaseClass);
+
+			o.set(BaseClass, "base class");
+			o.set(SubClass, "sub class");
+			proclaim.equal(o.get(BaseClass), "base class");
+			proclaim.equal(o.get(SubClass), "sub class");
 		}
 	});
 
@@ -482,13 +501,13 @@ describe('Map', function () {
 		o.set(generic, callback);
 		o.set(o, callback);
 		proclaim.equal(o.has(callback) && o.has(generic) && o.has(o), true);
-		o["delete"](callback);
-		o["delete"](generic);
-		o["delete"](o);
+		o.delete(callback);
+		o.delete(generic);
+		o.delete(o);
 		proclaim.equal(!o.has(callback) && !o.has(generic) && !o.has(o), true);
-		proclaim.ok(o["delete"](o) === false);
+		proclaim.ok(o.delete(o) === false);
 		o.set(o, callback);
-		proclaim.ok(o["delete"](o));
+		proclaim.ok(o.delete(o));
 	});
 
 	it("does not throw an error when a non-object key is used", function () {
@@ -508,7 +527,7 @@ describe('Map', function () {
 		var v = values.next();
 		proclaim.equal(k.value, "1");
 		proclaim.equal(v.value, 1);
-		o['delete']("2");
+		o.delete("2");
 		k = keys.next();
 		v = values.next();
 		proclaim.equal(k.value, "3");
@@ -545,7 +564,7 @@ describe('Map', function () {
 		// interfaces recognize it as a valid iterator
 		var lastResult = entriesagain.next();
 		proclaim.equal(lastResult.done, true);
-		proclaim.ok(lastResult.hasOwnProperty('value'));
+		proclaim.ok(Object.prototype.hasOwnProperty.call(lastResult, 'value'));
 		proclaim.equal(lastResult.value, void 0);
 	});
 
@@ -593,20 +612,18 @@ describe('Map', function () {
 
 	it("implements .forEach()", function () {
 		var o = new Map();
-		var o = new Map();
 		o.set("key 0", 0);
 		o.set("key 1", 1);
 		o.forEach(function (value, key, obj) {
 			proclaim.equal(key, "key " + value);
 			proclaim.equal(obj, o);
 			// even if dropped, keeps looping
-			o["delete"](key);
+			o.delete(key);
 		});
 		proclaim.equal(o.size, 0);
 	});
 
 	it("supports mutations during forEach loops", function () {
-		var o = new Map();
 		var o = new Map([["0", 0], ["1", 1], ["2", 2]]), seen = [];
 		o.forEach(function (value, key, obj) {
 			seen += ','+value;
@@ -614,8 +631,8 @@ describe('Map', function () {
 			proclaim.equal(""+value, key);
 			// mutations work as expected
 			if (value === 1) {
-				o['delete']("0"); // remove from before current index
-				o['delete']("2"); // remove from after current index
+				o.delete("0"); // remove from before current index
+				o.delete("2"); // remove from after current index
 				o.set("3", 3); // insertion
 			} else if (value === 3) {
 				o.set("0", 0); // insertion at the end
@@ -626,7 +643,6 @@ describe('Map', function () {
 
 	it("implements .clear()", function(){
 		var o = new Map();
-		var o = new Map();
 		o.set(1, '1');
 		o.set(2, '2');
 		o.set(3, '3');
@@ -635,7 +651,6 @@ describe('Map', function () {
 	});
 
 	it("allows set after clear", function(){
-		var o = new Map();
 		var o = new Map();
 		o.set(1, '1');
 		o.clear();
@@ -649,7 +664,7 @@ describe('Map', function () {
 	it("does not call callback if all items are deleted", function () {
 		var x = new Map();
 		x.set(42, 'hi');
-		x["delete"](42);
+		x.delete(42);
 		var executed = false;
 		x.forEach(function () {
 			executed = true;
@@ -663,7 +678,7 @@ describe('Map', function () {
 		var x = new Map();
 		x.set(42, 'hi');
 		x.set(43, 'bye');
-		x["delete"](43);
+		x.delete(43);
 		var callCount = 0;
 		x.forEach(function () {
 			callCount = callCount + 1;
@@ -678,16 +693,164 @@ describe('Map', function () {
 		z.set(45, 'bye');
 		z.set(46, 'bye');
 		z.set(47, 'bye');
-		z["delete"](43);
-		z["delete"](44);
-		z["delete"](45);
-		z["delete"](46);
-		z["delete"](47);
+		z.delete(43);
+		z.delete(44);
+		z.delete(45);
+		z.delete(46);
+		z.delete(47);
 		callCount = 0;
 		z.forEach(function () {
 			callCount = callCount + 1;
 		});
 
 		proclaim.equal(callCount, 1);
+	});
+
+	it.skip("has reasonable runtime performance with .has(), .delete(), .get() and .set()", function (done) {
+		this.timeout(10 * 1000);
+		var map = new Map();
+		var operations = 10000;
+		var timeout = setTimeout(function() {
+			timeout = null;
+			proclaim.fail('Map performance was unreasonably slow');
+			done();
+		}, 1000);
+		function operateOnMap(map, i) {
+			if (!timeout) {
+				return; // timeout has been cleared, signaling test has failed
+			}
+			if (i <= 0) {
+				clearTimeout(timeout);
+				proclaim.ok(true, 'Map performance is good');
+				done();
+				return;
+			}
+			for (var j = 0; j < operations / 10; j++) {
+				var key = 'item-' + i;
+				var value = 'mock-value-' + i;
+				map.set(key, value);
+				map.has(key);
+				map.get(key);
+				i--;
+			}
+			if (i <= 0) {
+				// Remove all entries
+				map.forEach(function(val, key) {
+					map.delete(key);
+				});
+			}
+			// release this frame in case timeout has occurred
+			setTimeout(function() {
+				operateOnMap(map, i);
+			}, 1);
+		}
+		operateOnMap(map, operations);
+	});
+
+	it('can use null as a key', function () {
+		var map1 = new Map();
+		map1.set(null, 1);
+		proclaim.equal(map1.get(null), 1);
+
+		var map2 = new Map();
+		map2.set('null', 1);
+		map2.set(null, 2);
+		proclaim.equal(map2.get('null'), 1);
+		proclaim.equal(map2.get(null), 2);
+
+		var map3 = new Map();
+		map3.set(null, 1);
+		map3.set(null, 3);
+		proclaim.equal(map3.get(null), 3);
+	});
+
+	it('can use undefined as a key', function () {
+		var map1 = new Map();
+		map1.set(undefined, 1);
+		proclaim.equal(map1.get(undefined), 1);
+
+		var map2 = new Map();
+		map2.set('undefined', 1);
+		map2.set(undefined, 2);
+		proclaim.equal(map2.get('undefined'), 1);
+		proclaim.equal(map2.get(undefined), 2);
+
+		var map3 = new Map();
+		map3.set(undefined, 1);
+		map3.set(undefined, 3);
+		proclaim.equal(map3.get(undefined), 3);
+
+		var map4 = new Map();
+		map4.set(undefined, 1);
+		map4.set(undefined, 3);
+		proclaim.equal(map4.get(this._this_was_not_defined), 3);
+	});
+
+	it('can use void 0 as a key', function () {
+		var map1 = new Map();
+		map1.set(void 0, 1);
+		proclaim.equal(map1.get(void 0), 1);
+
+		var map2 = new Map();
+		map2.set('void 0', 1);
+		map2.set(void 0, 2);
+		proclaim.equal(map2.get('void 0'), 1);
+		proclaim.equal(map2.get(void 0), 2);
+
+		var map3 = new Map();
+		map3.set(void 0, 1);
+		map3.set(void 0, 3);
+		proclaim.equal(map3.get(void 0), 3);
+	});
+
+	it('can use true as a key', function () {
+		var map1 = new Map();
+		map1.set(true, 1);
+		proclaim.equal(map1.get(true), 1);
+
+		var map2 = new Map();
+		map2.set('true', 1);
+		map2.set(true, 2);
+		proclaim.equal(map2.get('true'), 1);
+		proclaim.equal(map2.get(true), 2);
+
+		var map3 = new Map();
+		map3.set(true, 1);
+		map3.set(true, 3);
+		proclaim.equal(map3.get(true), 3);
+	});
+
+	it('can use false as a key', function () {
+		var map1 = new Map();
+		map1.set(false, 1);
+		proclaim.equal(map1.get(false), 1);
+
+		var map2 = new Map();
+		map2.set('false', 1);
+		map2.set(false, 2);
+		proclaim.equal(map2.get('false'), 1);
+		proclaim.equal(map2.get(false), 2);
+
+		var map3 = new Map();
+		map3.set(false, 1);
+		map3.set(false, 3);
+		proclaim.equal(map3.get(false), 3);
+	});
+
+	it('can use numbers as a key', function () {
+		var map1 = new Map();
+		map1.set(99, 1);
+		proclaim.equal(map1.get(99), 1);
+
+		var map2 = new Map();
+		map2.set('99', 1);
+		map2.set(99, 2);
+		proclaim.equal(map2.get('99'), 1);
+		proclaim.equal(map2.get(99), 2);
+
+		var map3 = new Map();
+		map3.set(99, 1);
+		map3.set(99, 3);
+		proclaim.equal(map3.get(99), 3);
 	});
 });

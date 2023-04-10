@@ -1,3 +1,4 @@
+dependencies = [ "_ESAbstract.Type" ]
 spec = "https://tc39.github.io/ecma262/#sec-tointeger"
 
 [browsers]
@@ -10,11 +11,9 @@ firefox = "*"
 firefox_mob = "*"
 ie = "*"
 ie_mob = "*"
-ios_chr = "*"
-ios_saf = "*"
-op_mini = "*"
-op_mob = "*"
 opera = "*"
+op_mob = "*"
+op_mini = "*"
 safari = "*"
+ios_saf = "*"
 samsung_mob = "*"
-

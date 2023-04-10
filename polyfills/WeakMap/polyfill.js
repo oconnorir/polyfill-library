@@ -38,6 +38,7 @@
 		try {
 			var iteratorRecord = GetIterator(iterable);
 			// 9. Repeat,
+			// eslint-disable-next-line no-constant-condition
 			while (true) {
 				// a. Let next be ? IteratorStep(iteratorRecord).
 				var next = IteratorStep(iteratorRecord);
@@ -76,14 +77,12 @@
 		} catch (e) {
 			// Polyfill.io - For user agents which do not have iteration methods on argument objects or arrays, we can special case those.
 			if (Array.isArray(iterable) ||
-				Object.prototype.toString.call(iterable) === '[object Arguments]' ||
-				// IE 7 & IE 8 return '[object Object]' for the arguments object, we can detect by checking for the existence of the callee property
-				(!!iterable.callee)) {
+				Object.prototype.toString.call(iterable) === '[object Arguments]') {
 				var index;
 				var length = iterable.length;
 				for (index = 0; index < length; index++) {
-					var k = iterable[index][0];
-					var v = iterable[index][1];
+					k = iterable[index][0];
+					v = iterable[index][1];
 					Call(adder, map, [k, v]);
 				}
 			}
@@ -240,6 +239,12 @@
 	// 23.3.3.6 WeakMap.prototype [ @@toStringTag ]
 	// The initial value of the @@toStringTag property is the String value "WeakMap".
 	// This property has the attributes { [[Writable]]: false, [[Enumerable]]: false, [[Configurable]]: true }.
+	Object.defineProperty(WeakMap.prototype, Symbol.toStringTag, {
+		configurable: true,
+		enumerable: false,
+		writable: false,
+		value: 'WeakMap'
+	});
 
 	// Polyfill.io - Safari 8 implements WeakMap.name but as a non-writable property, which means it would throw an error if we try and write to it here.
 	if (!('name' in WeakMap)) {
@@ -253,11 +258,5 @@
 	}
 
 	// Export the object
-	try {
-		CreateMethodProperty(global, 'WeakMap', WeakMap);
-	} catch (e) {
-		// IE8 throws an error here if we set enumerable to false.
-		// More info on table 2: https://msdn.microsoft.com/en-us/library/dd229916(v=vs.85).aspx
-		global['WeakMap'] = WeakMap;
-	}
-}(this));
+	CreateMethodProperty(global, 'WeakMap', WeakMap);
+}(self));

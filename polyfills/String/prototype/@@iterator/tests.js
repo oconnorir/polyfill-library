@@ -1,4 +1,4 @@
-/* eslint-env mocha */
+
 /* globals proclaim, Symbol */
 
 it('is a function', function () {
@@ -40,4 +40,6 @@ it('finally returns a done object', function () {
 	});
 });
 
-
+it('StringIteratorPrototype[Symbol.toStringTag]', function () {
+	proclaim.strictEqual(Object.getPrototypeOf(''[Symbol.iterator]())[Symbol.toStringTag], 'String Iterator');
+});

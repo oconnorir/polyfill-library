@@ -51,7 +51,7 @@ Create an options object for use with `getPolyfills` or `getPolyfillString`.
 - `@param {Object} [opts.features={}]` - Which features should be returned if the user-agent does not support them natively.
 - `@param {Array<String>} [opts.excludes=[]]` - Which features should be excluded from the returned object.
 - `@param {String} [opts.uaString='']` - The user-agent string to check each feature against.
-- `@param {Boolean} [opts.rum=false]` - Whether to add a script to the polyfill bundle which reports anonymous usage data.
+- `@param {Boolean} [opts.rum=false]` - Whether to include a script that reports anonymous usage data in the polyfill bundle.
 
 Returns an object which has merged `opts` with the defaults option values.
 
@@ -65,7 +65,7 @@ Given a set of features that should be polyfilled in 'opts.features' (with flags
 - `@param {Object} [opts.features={}]` - Which features should be returned if the user-agent does not support them natively.
 - `@param {Array<String>} [opts.excludes=[]]` - Which features should be excluded from the returned object.
 - `@param {String} [opts.uaString='']` - The user-agent string to check each feature against.
-- `@param {Boolean} [opts.rum=false]` - Whether to add a script to the polyfill bundle which reports anonymous usage data.
+- `@param {Boolean} [opts.rum=false]` - Whether to include a script that reports anonymous usage data in the polyfill bundle.
 
 Returns a Promise which resolves to an Object which contains the canonicalised feature definitions filtered for UA.
 
@@ -79,7 +79,7 @@ Create a polyfill bundle.
 - `@param {Object} [opts.features={}]` - Which features should be returned if the user-agent does not support them natively.
 - `@param {Array<String>} [opts.excludes=[]]` - Which features should be excluded from the returned object.
 - `@param {String} [opts.uaString='']` - The user-agent string to check each feature against.
-- `@param {Boolean} [opts.rum=false]` - Whether to add a script to the polyfill bundle which reports anonymous usage data.
+- `@param {Boolean} [opts.rum=false]` - Whether to include a script that reports anonymous usage data in the polyfill bundle.
 - `@param {Boolean} [opts.stream=false]` - Whether to return a stream or a string of the polyfill bundle.
 
 Returns a polyfill bundle as either a utf-8 ReadStream or as a Promise of a utf-8 String.
@@ -94,6 +94,8 @@ Development of polyfill-library happens on GitHub. Read below to learn how you c
 Read our [contributing guide][contributing-guide] to learn about our development process, how to propose bugfixes and improvements, and how to build and test your changes.
 
 ```
+# To test on BrowserStack you will need to have a BrowserStack account
+# We test pull-requests using BrowserStack
 npm run test-all-polyfills # Run the tests for all polyfills using BrowserStack
 npm run test-polyfills -- --features=Array.from # Run the tests for Array.from
 npm run test-polyfills -- --features=Array.from --browserstack # Run the tests for Array.from using BrowserStack

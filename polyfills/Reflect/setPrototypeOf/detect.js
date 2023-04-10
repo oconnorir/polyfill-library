@@ -1,1 +1,1 @@
-'setPrototypeOf' in Reflect
+self.Reflect && 'setPrototypeOf' in self.Reflect

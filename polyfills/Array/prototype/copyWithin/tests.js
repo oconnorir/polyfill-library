@@ -1,4 +1,3 @@
-/* eslint-env mocha */
 /* globals proclaim */
 
 it('is a function', function () {
@@ -62,6 +61,7 @@ it('works with arraylike objects', function () {
 });
 
 it('should delete the target key if the source key is not present', function () {
+	// eslint-disable-next-line no-sparse-arrays
 	proclaim.deepStrictEqual([, 1, 2].copyWithin(1, 0), [, , 1]);
 });
 

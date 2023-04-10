@@ -1,11 +1,9 @@
 aliases = [ ]
 dependencies = [
-  "Object.defineProperty",
-  "Array.prototype.filter",
-  "Array.prototype.includes",
-  "requestAnimationFrame",
-  "performance.now",
-  "Event"
+	"Array.prototype.includes",
+	"requestAnimationFrame",
+	"performance.now",
+	"Event"
 ]
 license = "MIT"
 docs = "https://developer.mozilla.org/en-US/docs/Web/API/Window/requestIdleCallback"
@@ -17,14 +15,12 @@ chrome = "<47"
 edge = "*"
 edge_mob = "*"
 firefox = "<55"
-ios_chr = "*"
-ios_saf = "*"
+firefox_mob = "<55"
 ie = "*"
 ie_mob = "*"
 opera = "<34"
+op_mob = "<34"
 op_mini = "*"
-op_mob = "*"
-safari = "9 - *"
-firefox_mob = "<55"
-samsung_mob = "*"
-
+safari = ">=9.0"
+ios_saf = ">=9.0"
+samsung_mob = "<5.0"

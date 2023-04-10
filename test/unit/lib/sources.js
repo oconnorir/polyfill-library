@@ -1,7 +1,6 @@
-/* eslint-env mocha */
-"use strict";
+'use strict';
 
-const assert = require('proclaim');
+const {assert} = require('chai');
 const mockery = require('mockery');
 const sinon = require('sinon');
 
@@ -29,7 +28,7 @@ describe('lib/sources', () => {
 		mockery.registerMock('path', pathMock);
 
 		aliases = {};
-		mockery.registerMock('../polyfills/__dist/aliases.toml', aliases);
+		mockery.registerMock('../polyfills/__dist/aliases.json', aliases);
 	});
 
 	it('exports an object', () => {
@@ -63,14 +62,14 @@ describe('lib/sources', () => {
 	});
 
 	describe('sources.listPolyfills()', () => {
-		it('filters out toml files from the polyfill directory', () => {
+		it('filters out json files from the polyfill directory', () => {
 			const spy = sinon.spy(Array.prototype, 'filter');
 			const sources = require('../../../lib/sources');
 
 			return sources.listPolyfills().then(() => {
 				spy.restore();
-				assert.equal(spy.lastCall.args[0]('aliases.toml'), false);
-				assert.equal(spy.lastCall.args[0]('example.toml'), false);
+				assert.equal(spy.lastCall.args[0]('aliases.json'), false);
+				assert.equal(spy.lastCall.args[0]('example.json'), false);
 			});
 		});
 
@@ -83,9 +82,8 @@ describe('lib/sources', () => {
 
 	describe('sources.getConfigAliases()', () => {
 		it('returns a promise which resolves with  an array of polyfills which are under the alias', () => {
-			const TOML = require('@iarna/toml');
 			const polyfills = ["Array.from", "Array.of", "Map", "Object.assign", "Object.is", "Promise", "Set", "Symbol", "WeakMap", "WeakSet"];
-			fs.readFile.yields(undefined, TOML.stringify({
+			fs.readFile.yields(undefined, JSON.stringify({
 				es6: polyfills
 			}));
 			const sources = require('../../../lib/sources');
@@ -93,12 +91,20 @@ describe('lib/sources', () => {
 		});
 
 		it('returns a promise which resolves to undefined if alias does not exist', () => {
-			const TOML = require('@iarna/toml');
-			fs.readFile.yields(undefined, TOML.stringify({
+			fs.readFile.yields(undefined, JSON.stringify({
 				es6: ["Array.from", "Array.of", "Map", "Object.assign", "Object.is", "Promise", "Set", "Symbol", "WeakMap", "WeakSet"]
 			}));
 			const sources = require('../../../lib/sources');
 			return sources.getConfigAliases('es7').then(config => assert.isUndefined(config));
+		});
+
+		it('issue 1137 - returns `undefined` for properties which exist directly on Object.prototype', async () => {
+			fs.readFile.yields(undefined, JSON.stringify({}));
+			const sources = require('../../../lib/sources');
+			for (const aliasName of ['constructor','__defineGetter__','__defineSetter__','hasOwnProperty','__lookupGetter__','__lookupSetter__','isPrototypeOf','propertyIsEnumerable','toString','valueOf','__proto__','toLocaleString',]) {
+				const config = await sources.getConfigAliases(aliasName);
+				assert.isUndefined(config);
+			}
 		});
 	});
 
@@ -114,22 +120,13 @@ describe('lib/sources', () => {
 		};
 
 		beforeEach(() => {
-			const TOML = require('@iarna/toml');
 			fs.readdir.yields(undefined, ['Array.from']);
-			fs.readFile.yields(undefined, TOML.stringify(metadata));
+			fs.readFile.yields(undefined, JSON.stringify(metadata));
 		});
 
 		it('returns a promise which resolves with the metadata for a feature if it exists', () => {
 			const sources = require('../../../lib/sources');
 			return sources.getPolyfillMeta('Array.from').then(meta => assert.deepEqual(meta, metadata));
-		});
-
-		it('returns a promise which resolves with undefined for a feature if it does not exist', () => {
-			fs.readFile.yields(new Error);
-			const sources = require('../../../lib/sources');
-			return sources.getPolyfillMeta('Array.of').then(meta => {
-				assert.isUndefined(meta);
-			});
 		});
 	});
 
@@ -147,7 +144,7 @@ describe('lib/sources', () => {
 			pathMock.join.withArgs('../polyfills/__dist', 'Array.from', 'min.js').returns('../polyfills/__dist/Array.from/min.js');
 			pathMock.join.returnsArg(1);
 
-			fs.createReadStream.returns({ pipe: sinon.stub() });
+			fs.createReadStream.returns({ pipe: sinon.stub(), on: () => {} });
 			const sources = require('../../../lib/sources');
 			sources.streamPolyfillSource('Array.from', 'min');
 			assert.calledWithExactly(fs.createReadStream, '../polyfills/__dist/Array.from/min.js',

@@ -1,9 +1,9 @@
 dependencies = [
-  "_ESAbstract.Type",
-  "_ESAbstract.HasProperty",
-  "_ESAbstract.ToBoolean",
-  "_ESAbstract.Get",
-  "_ESAbstract.IsCallable"
+	"_ESAbstract.Type",
+	"_ESAbstract.HasProperty",
+	"_ESAbstract.ToBoolean",
+	"_ESAbstract.Get",
+	"_ESAbstract.IsCallable"
 ]
 spec = "https://tc39.github.io/ecma262/#sec-topropertydescriptor"
 
@@ -17,11 +17,9 @@ firefox = "*"
 firefox_mob = "*"
 ie = "*"
 ie_mob = "*"
-ios_chr = "*"
-ios_saf = "*"
-op_mini = "*"
-op_mob = "*"
 opera = "*"
+op_mob = "*"
+op_mini = "*"
 safari = "*"
+ios_saf = "*"
 samsung_mob = "*"
-

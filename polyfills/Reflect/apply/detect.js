@@ -1,1 +1,1 @@
-'apply' in Reflect
+self.Reflect && 'apply' in self.Reflect

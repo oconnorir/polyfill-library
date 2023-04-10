@@ -1,4 +1,4 @@
-dependencies = [ "document", "Element" ]
+dependencies = [ ]
 
 [browsers]
 android = "*"
@@ -10,11 +10,9 @@ firefox = "*"
 firefox_mob = "*"
 ie = "*"
 ie_mob = "*"
-ios_chr = "*"
-ios_saf = "*"
-op_mini = "*"
-op_mob = "*"
 opera = "*"
+op_mob = "*"
+op_mini = "*"
 safari = "*"
+ios_saf = "*"
 samsung_mob = "*"
-

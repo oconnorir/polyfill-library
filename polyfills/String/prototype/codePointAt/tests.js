@@ -1,4 +1,4 @@
-/* eslint-env mocha */
+
 /* globals proclaim */
 
 it('is a function', function () {
@@ -17,20 +17,6 @@ it('is not enumerable', function () {
 	proclaim.isNotEnumerable(String.prototype, 'codePointAt');
 });
 
-var arePropertyDescriptorsSupported = function () {
-	var obj = {};
-	try {
-		Object.defineProperty(obj, 'x', { enumerable: false, value: obj });
-        /* eslint-disable no-unused-vars, no-restricted-syntax */
-        for (var _ in obj) { return false; }
-        /* eslint-enable no-unused-vars, no-restricted-syntax */
-		return obj.x === obj;
-	} catch (e) { // this is IE 8.
-		return false;
-	}
-};
-var ifSupportsDescriptors = Object.defineProperty && arePropertyDescriptorsSupported() ? it : xit;
-
 // Tests ported from https://github.com/es-shims/es6-shim/blob/master/test/string.js#L496-L541
 
 var hasStrictMode = (function () {
@@ -45,8 +31,7 @@ describe('#codePointAt()', function () {
 		proclaim.isFunction(String.prototype.codePointAt);
 	});
 
-
-	ifSupportsDescriptors('is not enumerable', function () {
+	it('is not enumerable', function () {
 		proclaim.isFalse(Object.prototype.propertyIsEnumerable.call(String.prototype.codePointAt));
 	});
 
@@ -155,4 +140,3 @@ it('works as expected', function () {
 		}, TypeError);
 	}
 });
-

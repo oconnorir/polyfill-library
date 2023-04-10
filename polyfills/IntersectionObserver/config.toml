@@ -1,17 +1,9 @@
 aliases = [ ]
 dependencies = [
-  "getComputedStyle",
-  "Array.isArray",
-  "Array.prototype.filter",
-  "Array.prototype.forEach",
-  "Array.prototype.indexOf",
-  "Array.prototype.map",
-  "Array.prototype.some",
-  "Event",
-  "Function.prototype.bind",
-  "performance.now"
+	"Event",
+	"performance.now"
 ]
-docs = "https://github.com/w3c/IntersectionObserver/blob/master/explainer.md"
+docs = "https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver"
 spec = "http://rawgit.com/w3c/IntersectionObserver/master/index.html"
 notes = [ ]
 repo = "https://github.com/w3c/IntersectionObserver"
@@ -19,16 +11,16 @@ repo = "https://github.com/w3c/IntersectionObserver"
 [browsers]
 android = "*"
 bb = "*"
-chrome = "< 51"
-edge = "< 16"
-edge_mob = "< 16"
-firefox = "< 55"
-firefox_mob = "< 55"
+chrome = "<51"
+edge = "<16"
+edge_mob = "<16"
+firefox = "<55"
+firefox_mob = "<55"
 ie = "*"
 ie_mob = "*"
-ios_saf = "< 12.2"
+opera = "<45"
+op_mob = "<46"
 op_mini = "*"
-opera = "< 45"
-safari = "< 12.2"
-samsung_mob = "< 7"
-
+safari = "<17.0" # https://github.com/Financial-Times/polyfill-library/issues/1192#issuecomment-1264367724
+ios_saf = "<17.0" # https://github.com/Financial-Times/polyfill-library/issues/1192#issuecomment-1264367724
+samsung_mob = "<7.0"

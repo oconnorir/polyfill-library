@@ -1,11 +1,11 @@
 aliases = [ "caniuse:console-basic" ]
-dependencies = [ "Window", "console" ]
+dependencies = [ "console" ]
 spec = "https://console.spec.whatwg.org"
 docs = "https://developer.mozilla.org/en/docs/Web/API/console"
 
 [browsers]
-edge = "*"
+chrome = "*"
+edge = "<17.17134"
 edge_mob = "*"
+firefox = "<75"
 ie = "*"
-firefox = "1 - 4"
-

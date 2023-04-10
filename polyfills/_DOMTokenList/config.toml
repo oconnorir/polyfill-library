@@ -1,4 +1,4 @@
-dependencies = [ "Object.defineProperty" ]
+dependencies = [ ]
 license = "ISC"
 repo = "https://github.com/Alhadis/DOMTokenList"
 
@@ -9,14 +9,12 @@ chrome = "*"
 edge = "*"
 edge_mob = "*"
 firefox = "*"
-ios_chr = "*"
-ios_saf = "*"
+firefox_mob = "*"
 ie = "*"
 ie_mob = "*"
 opera = "*"
-op_mini = "*"
 op_mob = "*"
+op_mini = "*"
 safari = "*"
-firefox_mob = "*"
+ios_saf = "*"
 samsung_mob = "*"
-
