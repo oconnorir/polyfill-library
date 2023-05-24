@@ -31,22 +31,33 @@ CreateMethodProperty(Array.prototype, "sort", function sort(compareFn) {
 		// if compareFn exists, sort the array, breaking sorting ties by using the
 		// items' original index position.
 
+		var index;
+
 		// Keep track of the items starting index position.
-		var that = Array.prototype.map.call(this, function(item, index) {
-			return { item: item, index: index };
-		});
+		var that = [];
+		for (index = 0; index < this.length; index++) {
+			if (index in this) {
+				that.push({ item: this[index], index: index });
+			}
+		}
 		origSort.call(that, function(a, b) {
-			var compareResult = compareFn.call(undefined, a.item, b.item);
+			// this implementation is based on https://github.com/zloirock/core-js/blob/master/packages/core-js/modules/es.array.sort.js#L69-L76
+			if (b.item === undefined) return -1;
+			if (a.item === undefined) return 1;
+			var compareResult = +(compareFn.call(undefined, a.item, b.item)) || 0;
 			return compareResult === 0 ? a.index - b.index : compareResult;
 		});
 		// update the original object (`this`) with the new position for the items
 		// which were moved.
-		for (var a in that) {
-			if (Object.prototype.hasOwnProperty.call(that, a)) {
-				if (that[a].item !== this[a]) {
-					this[a] = that[a].item;
-				}
+		index = 0;
+		while (index < that.length) {
+			if (that[index]) {
+				this[index] = that[index].item;
 			}
+			index++;
+		}
+		while (index < this.length) {
+			delete this[index++];
 		}
 	}
 
